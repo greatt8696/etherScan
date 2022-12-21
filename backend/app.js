@@ -3,7 +3,7 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const cors = require("cors");
-// const api = require("./routers/api");
+const api = require("./routers/api");
 // const ether = require("./routers/ether");
 // const web3Manager = require("./web3/web3Manager");
 // const { connectDb, initDb } = require("./models");
@@ -32,4 +32,4 @@ app.use(express.urlencoded({ extended: false }));
 
 // app.use("/web3", ether);
 
-// app.use("/api", api);
+app.use("/api", api);
