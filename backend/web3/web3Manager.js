@@ -99,8 +99,8 @@ class TransactionManager {
 
   autoContractTanscation = async (
     selectTable = ["faucetMint", "transfer", "burn"],
-    loopSize = 10,
-    duration = 1000
+    loopSize = 1000,
+    duration = 10000
   ) => {
     let i = 0;
     const intervalId = setInterval(async () => {
