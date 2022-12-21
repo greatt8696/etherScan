@@ -1,7 +1,8 @@
 const Web3 = require("web3");
 
-const CA = "0x0C851690471aCfc7466264C93865169B781624aF";
-const Contract = require("../../solidity/artifacts/Test.json");
+const CA = "0x077108C0a03844203434F08DEBd1739CEc85C2AB";
+const Contract = require("../../solidity/artifacts/TestTransition.json");
+
 // const { Transaction, Block } = require("../models");
 // setInterval(async () => {
 //   web3.eth.getAccounts(console.log);
@@ -30,28 +31,38 @@ class TransactionManager {
   }
 
   init = async function () {
+    this.accounts = await this.web3.eth.getAccounts();
     this.instance = await new this.web3.eth.Contract(Contract.abi, CA);
+    this.methods = this.instance.methods;
     this.subscribeAllEvent();
     this.subscribeTransationEvent(this.instance);
-    console.log(await this.getAccounts());
   };
 
-  subscribeTransationEvent = function (contractInstance) {
+  getAccounts = () => this.accounts;
+
+  getMethodsName = () =>
+    Object.keys(this.methods).filter((_, idx) => idx % 3 === 0);
+
+  subscribeTransationEvent = (contractInstance) => {
     contractInstance.events
       .allEvents(function (error, result) {
         if (!error) {
-          console.log("subscribeTransationEvent : ", result);
+          console.log(
+            "subscribeTransationEvent : ",
+            result.event,
+            result.returnValues
+          );
           return;
         }
         console.error(error);
       })
       .on("connected", function (subscriptionId) {
-        console.log(subscriptionId);
+        console.log("subscribeTransactionID : ", subscriptionId);
       })
       .on("error", console.error);
   };
 
-  subscribeAllEvent = function () {
+  subscribeAllEvent = () => {
     this.web3.eth
       .subscribe("newBlockHeaders", function (error, result) {
         if (!error) {
@@ -61,7 +72,7 @@ class TransactionManager {
         console.error(error);
       })
       .on("connected", function (subscriptionId) {
-        console.log(subscriptionId);
+        console.log("subscribeNewBlockID : ", subscriptionId);
       })
       .on("data", async function (blockHeader) {
         // console.log("@@newBlockHeaders=>transaction@@ : ", blockHeader);
@@ -80,23 +91,102 @@ class TransactionManager {
     // );
   };
 
-  getAccounts = async () => await this.web3.eth.getAccounts();
+  sendTransaction = (
+    inputObj = {
+      functionName: "Transfer",
+      args: [],
+      from: "0x",
+      to: "0x",
+      value: "0x",
+    },
+    transactionInstance = this.instance
+  ) => {
+    const { args, functionName, ...other } = inputObj;
+    console.log(
+      `AUTO : transactionInstance.methods[${JSON.stringify(
+        functionName
+      )}](${JSON.stringify({
+        ...args,
+      })}).send(${JSON.stringify({
+        ...other,
+      })})`
+    );
+    return transactionInstance.methods[functionName](...args).send({
+      ...other,
+    });
+  };
+
+  autoContractTanscation = async (
+    selectTable = ["faucetMint", "transfer", "burn"],
+    loopSize = 10,
+
+    duration = 1000
+  ) => {
+    let i = 0;
+    const intervalId = setInterval(async () => {
+      if (i >= loopSize) clearInterval(intervalId);
+
+      const selectedFunction = randomChoice(["faucetMint", "transfer", "burn"]);
+      let inputObj;
+
+      switch (selectedFunction) {
+        case "faucetMint":
+          inputObj = {
+            functionName: "faucetMint",
+            args: [randomNumber(20, 5000)],
+            from: randomChoice(this.getAccounts()),
+          };
+          break;
+        case "transfer":
+          inputObj = {
+            functionName: "transfer",
+            args: [randomChoice(this.getAccounts()), randomNumber(20, 25)],
+            from: this.getAccounts()[0],
+          };
+          break;
+        case "burn":
+          inputObj = {
+            functionName: "burn",
+            args: [randomNumber(20, 25)],
+            from: this.getAccounts()[0],
+          };
+          break;
+
+        default:
+          break;
+      }
+      console.log("@@@@input : ", inputObj);
+      this.sendTransaction(inputObj);
+      console.log(`AUTO-${i} : {${JSON.stringify(inputObj)}}`);
+      i += 1;
+    }, duration);
+  };
 }
 
-const autoContractTanscation = async (loopSize = 1000, duration = 10000) => {
-  const instance = await this.web3.eth.Contract(Contract.abi, CA);
-  let i = 0;
-  const intervalId = setInterval(async () => {
-    if (i >= loopSize) clearInterval(intervalId);
-    console.log("autoContractTanscation running : ", i);
-
-    const method = await instance.methods.foo("11111", "11111").send({
-      from: FROM,
-    });
-    i += 1;
-  }, duration);
+const randomChoice = (arr) => {
+  const random = Math.random();
+  const randomIdx = parseInt(random * arr.length);
+  return arr[randomIdx];
 };
 
-const transactionManager = new TransactionManager();
+const randomNumber = (min, max) => {
+  const random = Math.random();
+  const randomGap = (max - min) * random;
+  const setMinimum = randomGap + min;
+  const parsedInteger = parseInt(setMinimum);
+  return parsedInteger;
+};
 
-transactionManager.init();
+(async () => {
+  const transactionManager = new TransactionManager();
+  await transactionManager.init();
+  console.log(transactionManager.getMethodsName());
+  try {
+    transactionManager.sendTransaction({
+      functionName: "faucetMint",
+      args: [randomNumber(500000, 5000000)],
+      from: transactionManager.getAccounts()[0],
+    });
+    transactionManager.autoContractTanscation();
+  } catch (_) {}
+})();

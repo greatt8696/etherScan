@@ -27,9 +27,8 @@ contract TestTransition {
         "0x4d1...1ff" : 100,
         "0x251...sd3" : 1000,
         "0xaaa...ah3" : 10000,
-        "0xb0d...222" : 100000,
-        ...
-      }
+        "0xb0d...222" : 100000, ...
+                        }
     */
 
     mapping(address => uint256) private _balances;
