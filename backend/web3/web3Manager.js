@@ -10,7 +10,7 @@ const {
   Transaction,
   Logs,
   Nft,
-} = require("../models/index");
+} = require("../mongoDb/models/index");
 
 class TransactionManager {
   constructor() {
