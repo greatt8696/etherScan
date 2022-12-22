@@ -11,12 +11,13 @@ import {
 } from "lucide-react";
 import MenuDropdown from "../userDropdown/Main";
 import UserDropdown from "../userDropdown/Main1";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Main = () => {
   const nav = useNavigate();
+  const location = useLocation();
   const userDropdownArrowRef = useRef();
-  const [onUserDropdown, setOnUserDropdown] = useState(true);
+  const [onUserDropdown, setOnUserDropdown] = useState(false);
   const [onMenusDropdown, setOnMenusDropdown] = useState([
     { type: "menu1", value: false },
     { type: "menu2", value: false },
@@ -58,7 +59,9 @@ const Main = () => {
   };
 
   const linkToGallery = () => nav("/gallery");
-  const linkToMain = () => nav("/");
+  const linkToMain = () => nav("/", { state: { id: 1 } });
+
+  console.log(location);
 
   const menu1Dropdown = [
     { title: "드롭다운1메뉴1", IconTag: Users, link: () => linkToGallery },
@@ -127,7 +130,7 @@ const Main = () => {
     <div className="animate-introX w-[94%] min-w-[800px] bg-slate-400/90 backdrop-blur-sm  rounded-lg p-2 mt-5 mx-auto z-50">
       <div className="w-full min-w-[600px] flex items-center justify-between space-x-1 relative">
         <nav
-          className="flex items-center space-x-3 w-[80px] lg:w-[260px]"
+          className="flex items-center space-x-3 w-[80px] lg:w-[260px] cursor-pointer"
           onClick={linkToMain}
         >
           <img
