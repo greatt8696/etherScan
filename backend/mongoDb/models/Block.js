@@ -26,10 +26,18 @@ const blockSchema = new Schema({
 });
 
 blockSchema.statics.insertBlocks = function (blocks) {
+  console.log("insertBlocks@@@@@@@@", blocks);
   return this.insertMany(blocks);
 };
-blockSchema.statics.insertBlock = function (blocks) {
-  return this.create(blocks);
+blockSchema.statics.insertBlock = async function (block) {
+  // const checkDuplicate = await this.find({ number: block.number });
+  // console.log(
+  //   "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",
+  //   block.number,
+  //   checkDuplicate
+  // );
+  // if (checkDuplicate.length !== 0) return;
+  return this.create(block);
 };
 
 blockSchema.statics.findAll = function () {

@@ -5,26 +5,24 @@ const app = express();
 const cors = require("cors");
 const api = require("./routers/api");
 const { blockRouter, transactionRouter, logsRouter } = require("./routers");
-const { connectDb } = require("./mongoDb/models");
-// const ether = require("./routers/ether");
-// const web3Manager = require("./web3/web3Manager");
-// const { connectDb, initDb } = require("./models");
+const { connectDb, initDb } = require("./mongoDb/models");
+const { TransactionManager } = require("./web3/web3Manager");
 const { SERVER_PORT } = process.env;
 
-// mongoDb and Web3 init
-// (async () => {
-//   const transactionManager = await web3Manager.getTransactionManager();
-//   transactionManager.init();
-//   web3Manager.autoContractTanscation();
-
-//   connectDb().then(() => {
-//     initDb(web3Manager);
-//   });
-
-// })();
-
 //mongoDb 실행
-(async () => connectDb())();
+
+(async () => {
+  connectDb();
+  const transactionManager = new TransactionManager();
+  await transactionManager.init();
+  try {
+    transactionManager.subscribeAllEvent();
+    transactionManager.initTransaction();
+    transactionManager.autoContractTanscation();
+  } catch (error) {
+    console.log(error);
+  }
+})();
 
 app.use(cors({ origin: "*", credentials: false }));
 

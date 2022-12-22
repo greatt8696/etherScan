@@ -5,6 +5,7 @@ const { Block } = require("./Block");
 const { Transaction } = require("./Transaction");
 const { Logs } = require("./Logs");
 const { Nft } = require("./Nft");
+
 const initDb = async (web3Manager) => {
   await Block.deleteAll();
   console.log("Block.deleteAll : Success");
@@ -31,7 +32,7 @@ const initTransactions = async (blocks) => {
       transactionsArray.push(transaction)
     );
   });
-  await Transaction.insertTransactions(transactionsArray);
+  // await Transaction.insertTransactions(transactionsArray);
   return transactionsArray;
 };
 

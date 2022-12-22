@@ -1,6 +1,6 @@
 const Web3 = require("web3");
 
-const CA = "0x077108C0a03844203434F08DEBd1739CEc85C2AB";
+const CA = "0xd8C1A1DE4F94F4F528764f15BB10d4315FD2c63A";
 const Contract = require("../../solidity/artifacts/TestTransition.json");
 
 const {
@@ -15,6 +15,7 @@ const {
 class TransactionManager {
   constructor() {
     this.web3 = new Web3(Web3.givenProvider || "ws://127.0.0.1:8545");
+    this.latestBlockNumber = [];
   }
 
   init = async () => {
@@ -24,6 +25,17 @@ class TransactionManager {
     this.subscribeAllEvent();
     this.subscribeTransationEvent(this.instance);
   };
+
+  insertBlockNumber = (number) => {
+    if (this.isExistBlockNumber(number)) return;
+    this.latestBlockNumber.push(number);
+  };
+
+  isExistBlockNumber = (number) =>
+    this.latestBlockNumber.findIndex((blockNumber) => blockNumber === number) >
+    -1
+      ? true
+      : false;
 
   getAccounts = () => this.accounts;
 
@@ -52,24 +64,28 @@ class TransactionManager {
 
   subscribeAllEvent = () => {
     this.web3.eth
-      .subscribe("newBlockHeaders", async (error, result) => {
-        if (!error) {
-          console.log("newBlockHeaders : ", result.hash, result.number);
-          const newTransaction = await this.web3.eth.getTransaction(
-            result.hash
-          );
-          await Transaction.insertTransaction(newTransaction);
-          return;
-        }
-        console.error(error);
-      })
-      .on("connected", function (subscriptionId) {
-        console.log("subscribeNewBlockID : ", subscriptionId);
-      })
-      .on("data", async function (blockHeader) {
-        // console.log("@@newBlockHeaders=>transaction@@ : ", blockHeader);
+      .subscribe("newBlockHeaders")
+      .on("data", async (result) => {
+        console.log("newBlockHeadersID-BlockNumber : ", result.number);
+        if (this.isExistBlockNumber(result.number)) return;
+        this.insertBlockNumber(result.number);
+        const insertBlock = Block.insertBlock(result);
+        const newTransaction = this.web3.eth.getTransactionFromBlock(
+          result.hash
+        );
+        await Promise.all([insertBlock, newTransaction]);
+        await Transaction.insertTransactions(newTransaction);
+        this.insertBlockNumber(result.number);
       })
       .on("error", console.error);
+  };
+
+  initTransaction = () => {
+    this.sendTransaction({
+      functionName: "faucetMint",
+      args: [randomNumber(500000, 5000000)],
+      from: this.getAccounts()[0],
+    });
   };
 
   sendTransaction = (
@@ -99,8 +115,8 @@ class TransactionManager {
 
   autoContractTanscation = async (
     selectTable = ["faucetMint", "transfer", "burn"],
-    loopSize = 1000,
-    duration = 10000
+    loopSize = 50,
+    duration = 1000
   ) => {
     let i = 0;
     const intervalId = setInterval(async () => {
@@ -135,10 +151,12 @@ class TransactionManager {
         default:
           break;
       }
-      console.log("@@@@input : ", inputObj);
+      // console.log("@@@@input : ", inputObj);
       this.sendTransaction(inputObj);
       console.log(`AUTO-${i} : {${JSON.stringify(inputObj)}}`);
       i += 1;
+      const logsInsert = await Logs.insertlogss(inputObj);
+      // console.log("@@@@@@@@@", logsInsert);
     }, duration);
   };
 }
@@ -157,18 +175,4 @@ const randomNumber = (min, max) => {
   return parsedInteger;
 };
 
-(async () => {
-  connectDb();
-
-  const transactionManager = new TransactionManager();
-  await transactionManager.init();
-  console.log(transactionManager.getMethodsName());
-  try {
-    transactionManager.sendTransaction({
-      functionName: "faucetMint",
-      args: [randomNumber(500000, 5000000)],
-      from: transactionManager.getAccounts()[0],
-    });
-    transactionManager.autoContractTanscation();
-  } catch (_) {}
-})();
+module.exports = { TransactionManager };
