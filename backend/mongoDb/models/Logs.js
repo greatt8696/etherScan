@@ -1,10 +1,12 @@
 const mongoDb = require("mongoose");
 const { Schema } = mongoDb;
 
+const { convertLogs } = require("../../util/dbUtil");
+
 const logsSchema = new Schema({
   logIndex: { type: String },
   transactionIndex: { type: String },
-  transactionHash: { type: String },
+  transactionHash: { type: String, index: true },
   blockHash: { type: String },
   blockNumber: { type: String },
   address: { type: String },
@@ -22,26 +24,21 @@ logsSchema.statics.insertlogss = function (logss) {
 };
 
 logsSchema.statics.insertLogs = async function (logs) {
-  // if (logs === null) return;
-  // const isExist = await this.find({ hash: logs.hash });
-  // if (!!isExist.length) {
-  //   console.log("logsSchema.statics.insertlogs: isExist", isExist);
-  //   return;
-  // }
-  // console.log("newlogs", logs);
   return this.create(logs);
 };
 
-logsSchema.statics.findAll = function () {
-  return this.find({});
+logsSchema.statics.findByTransactionHash = async function (transactionHash) {
+  const resultLogs = await this.find({ transactionHash });
+  return convertLogs(resultLogs);
+};
+
+logsSchema.statics.findAll = async function () {
+  const resultLogs = await this.find({});
+  return convertLogs(resultLogs);
 };
 
 logsSchema.statics.deleteAll = function () {
   return this.deleteMany({});
-};
-
-logsSchema.statics.findByHash = function (hash) {
-  return this.find({ hash });
 };
 
 const Logs = mongoDb.model("logs", logsSchema);

@@ -4,6 +4,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const api = require("./routers/api");
+const { blockRouter, transactionRouter, logsRouter } = require("./routers");
 const { connectDb } = require("./mongoDb/models");
 // const ether = require("./routers/ether");
 // const web3Manager = require("./web3/web3Manager");
@@ -21,9 +22,9 @@ const { SERVER_PORT } = process.env;
 //   });
 
 // })();
-(async () => {
-  connectDb();
-})();
+
+//mongoDb 실행
+(async () => connectDb())();
 
 app.use(cors({ origin: "*", credentials: false }));
 
@@ -35,6 +36,10 @@ app.use(express.json());
 
 app.use(express.urlencoded({ extended: false }));
 
-// app.use("/web3", ether);
-
 app.use("/api", api);
+
+app.use("/block", blockRouter);
+
+app.use("/transaction", transactionRouter);
+
+app.use("/logs", logsRouter);

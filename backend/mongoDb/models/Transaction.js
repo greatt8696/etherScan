@@ -5,7 +5,7 @@ const transactionSchema = new Schema({
   hash: { type: String, index: true },
   nonce: { type: String },
   blockHash: { type: String },
-  blockNumber: { type: String },
+  blockNumber: { type: String, index: true },
   transactionIndex: { type: String },
   from: { type: String },
   to: { type: String },
