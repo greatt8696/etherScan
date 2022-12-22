@@ -55,5 +55,16 @@ router.get("/searchByBlockNumber/:blockNumber/", async (req, res) => {
     return response(res, 404, false, false, error);
   }
 });
+router.get("/searchByblockHash/:blockHash/", async (req, res) => {
+  try {
+    const { blockHash } = req.params;
+    const transaction = await Transaction.find({ blockHash });
+    if (transaction.length === 0)
+      throw new Error("이 블록해시에 해당하는 트랜잭션이 없다구욧");
+    return response(res, 200, true, transaction);
+  } catch (error) {
+    return response(res, 404, false, false, error);
+  }
+});
 
 module.exports = router;

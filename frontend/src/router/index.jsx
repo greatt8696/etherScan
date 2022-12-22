@@ -2,6 +2,8 @@ import React from "react";
 import { useRoutes } from "react-router-dom";
 import Main from "../views/main/Main";
 import Gallery from "../views/gallery/Main";
+import Dashboard from "../views/dashboard/Main";
+import Transaction from "../views/transaction/Main";
 
 const Router = () => {
   const routes = [
@@ -9,6 +11,14 @@ const Router = () => {
       path: "/",
       element: <Main />,
       children: [
+        {
+          path: "/",
+          element: <Dashboard />,
+        },
+        {
+          path: "/transactionByBlockHash/:hash",
+          element: <Transaction />,
+        },
         {
           path: "/gallery",
           element: <Gallery />,
