@@ -4,6 +4,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const api = require("./routers/api");
+const { connectDb } = require("./mongoDb/models");
 // const ether = require("./routers/ether");
 // const web3Manager = require("./web3/web3Manager");
 // const { connectDb, initDb } = require("./models");
@@ -18,7 +19,11 @@ const { SERVER_PORT } = process.env;
 //   connectDb().then(() => {
 //     initDb(web3Manager);
 //   });
+
 // })();
+(async () => {
+  connectDb();
+})();
 
 app.use(cors({ origin: "*", credentials: false }));
 
