@@ -1,6 +1,6 @@
 const Web3 = require("web3");
 
-const CA = "0xd8C1A1DE4F94F4F528764f15BB10d4315FD2c63A";
+const CA = "0x7767F5ba00614C80AF7c923158572756671b211A";
 const Contract = require("../../solidity/artifacts/TestTransition.json");
 
 const {
@@ -69,12 +69,12 @@ class TransactionManager {
         console.log("newBlockHeadersID-BlockNumber : ", result.number);
         if (this.isExistBlockNumber(result.number)) return;
         this.insertBlockNumber(result.number);
-        const insertBlock = Block.insertBlock(result);
-        const newTransaction = this.web3.eth.getTransactionFromBlock(
+        const insertBlock = await Block.insertBlock(result);
+        const newTransaction = await this.web3.eth.getTransactionFromBlock(
           result.hash
         );
-        await Promise.all([insertBlock, newTransaction]);
-        await Transaction.insertTransactions(newTransaction);
+        // console.log("@@@@@@@newTransaction", newTransaction);
+        await Transaction.insertTransaction(newTransaction);
         this.insertBlockNumber(result.number);
       })
       .on("error", console.error);
@@ -84,6 +84,7 @@ class TransactionManager {
     this.sendTransaction({
       functionName: "faucetMint",
       args: [randomNumber(500000, 5000000)],
+
       from: this.getAccounts()[0],
     });
   };

@@ -6,23 +6,23 @@ contract TestTransition {
     event Transfer(
         address indexed sender,
         address indexed reiciver,
-        uint256 amount
+        uint256 indexed amount
     );
 
     // Mint 이벤트
-    event Mint(address indexed minter, uint256 amount);
+    event Mint(address indexed minter, uint256 indexed amount);
 
     // Burn 이벤트
     event Burn(
         address indexed burner,
         address indexed zeroAddress,
-        uint256 amount
+        uint256 indexed amount
     );
 
     /*
       _balances 모든 지갑의 잔액을 담을수 있는 저장소 (오브젝트)
       자바스크립트 예)
-      const _balances = {
+      const _balances = {,
         "0x10h...235" : 10,
         "0x4d1...1ff" : 100,
         "0x251...sd3" : 1000,

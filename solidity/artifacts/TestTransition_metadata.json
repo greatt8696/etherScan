@@ -21,7 +21,7 @@
 						"type": "address"
 					},
 					{
-						"indexed": false,
+						"indexed": true,
 						"internalType": "uint256",
 						"name": "amount",
 						"type": "uint256"
@@ -40,7 +40,7 @@
 						"type": "address"
 					},
 					{
-						"indexed": false,
+						"indexed": true,
 						"internalType": "uint256",
 						"name": "amount",
 						"type": "uint256"
@@ -65,7 +65,7 @@
 						"type": "address"
 					},
 					{
-						"indexed": false,
+						"indexed": true,
 						"internalType": "uint256",
 						"name": "amount",
 						"type": "uint256"
@@ -210,11 +210,11 @@
 	},
 	"sources": {
 		"testTransition.sol": {
-			"keccak256": "0x8f4bd9e94842699f5d0eab803a5134a95973548737a3b23c994cdbc0e0a7df14",
+			"keccak256": "0xad20d991fb0a9d2c9e4b06aafa9149bef6d08443208c712e1fcb6571d342eadb",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://88052939a213eca6c9789b779a69b4bcaf74dd65bee13fbd109bd03637d15aed",
-				"dweb:/ipfs/QmYfsaGMqPDoVUE4Q959SEUyVFYjeHgo8oDHt7NZntt7FC"
+				"bzz-raw://deaa4fb188c372309f2109e99ee86d608d1e899d9ae2e5d6beabb2b261c34fbc",
+				"dweb:/ipfs/QmW9tVVazmt9JwLa6jzxKh8gQRqb6zJWsZb7eASJH1kZLx"
 			]
 		}
 	},
