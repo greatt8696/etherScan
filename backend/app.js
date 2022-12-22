@@ -13,7 +13,7 @@ const { SERVER_PORT } = process.env;
 
 (async () => {
   connectDb();
-  const transactionManager = new TransactionManager();
+  const transactionManager = new TransactionManager({ isTestNet: false });
   await transactionManager.init();
   try {
     transactionManager.subscribeAllEvent();

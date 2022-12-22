@@ -1,6 +1,6 @@
 const Web3 = require("web3");
 
-const CA = "0x7767F5ba00614C80AF7c923158572756671b211A";
+const CA = "0x8FFB42137432a68f2fD73727381E330A530a923b";
 const Contract = require("../../solidity/artifacts/TestTransition.json");
 
 const {
@@ -13,13 +13,24 @@ const {
 } = require("../mongoDb/models/index");
 
 class TransactionManager {
-  constructor() {
-    this.web3 = new Web3(Web3.givenProvider || "ws://127.0.0.1:8545");
+  constructor({ isTestNet }) {
+    this.isTestNet = isTestNet;
+    this.web3 = new Web3(
+      Web3.givenProvider || isTestNet
+        ? "wss://eth-goerli.g.alchemy.com/v2/_NSjX6xORhXSJKw214enYTvnDCiRVGa0"
+        : "ws://127.0.0.1:8545"
+    );
     this.latestBlockNumber = [];
   }
 
   init = async () => {
     this.accounts = await this.web3.eth.getAccounts();
+    if (this.isTestNet) {
+      this.accounts = await this.web3.eth.accounts.privateKeyToAccount(
+        "0xdb05cda62e2732c3c055642c45696eb9ef0265c2c8fe811ddae2d91b313e2795"
+      );
+      this.accounts = [this.accounts.address];
+    }
     this.instance = await new this.web3.eth.Contract(Contract.abi, CA);
     this.methods = this.instance.methods;
     this.subscribeAllEvent();
@@ -43,6 +54,7 @@ class TransactionManager {
     Object.keys(this.methods).filter((_, idx) => idx % 3 === 0);
 
   subscribeTransationEvent = (contractInstance) => {
+    // console.log("@@@@@@@@@@@@contractInstance", contractInstance.events);
     contractInstance.events
       .allEvents(async function (error, result) {
         if (!error) {
@@ -51,10 +63,13 @@ class TransactionManager {
             result.event,
             result.returnValues
           );
-          await Logs.insertLogs(result);
-          return;
+          // console.log(result);
         }
         console.error(error);
+      })
+      .on("data", async function (result) {
+        // console.log("data : ", result);
+        await Logs.insertlogss(result);
       })
       .on("connected", function (subscriptionId) {
         console.log("subscribeTransactionID : ", subscriptionId);
@@ -116,8 +131,8 @@ class TransactionManager {
 
   autoContractTanscation = async (
     selectTable = ["faucetMint", "transfer", "burn"],
-    loopSize = 50,
-    duration = 1000
+    loopSize = 3000,
+    duration = 5000
   ) => {
     let i = 0;
     const intervalId = setInterval(async () => {
@@ -156,7 +171,7 @@ class TransactionManager {
       this.sendTransaction(inputObj);
       console.log(`AUTO-${i} : {${JSON.stringify(inputObj)}}`);
       i += 1;
-      const logsInsert = await Logs.insertlogss(inputObj);
+      // const logsInsert = await Logs.insertlogss(inputObj);
       // console.log("@@@@@@@@@", logsInsert);
     }, duration);
   };
