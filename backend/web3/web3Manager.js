@@ -31,22 +31,13 @@ class TransactionManager {
       );
       this.accounts = [this.accounts.address];
     }
-
     this.instance = await new this.web3.eth.Contract(Contract.abi, CA);
 
-    this.methods = this.instance.methods.tokenURI(tokenId);
-
-    // http://localhost:3000/json/1 => axios("http://localhost:3000/json/1").then(result => {result.imageURI})
-    /**
-     * const ownerTonkens = [1,3,46,76,68,34]
-     * const callStack = ownerToken.map((tokenId)=>
-     *   await axios("http://localhost:3000/json/${tokenId}")
-     * )
-      await Promise.all(callStack)
-     * 
-     * 
-     * 
-     */
+    console.log(
+      "this.instance.methods",
+      this.instance.methods.faucetMint(2).send({ from: this.accounts[0] }).sign
+    );
+    this.methods = this.instance.methods;
     this.subscribeAllEvent();
     this.subscribeTransationEvent(this.instance);
   };
