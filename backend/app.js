@@ -6,21 +6,25 @@ const cors = require("cors");
 const api = require("./routers/api");
 const { blockRouter, transactionRouter, logsRouter } = require("./routers");
 const { connectDb, initDb } = require("./mongoDb/models");
-const { TransactionManager } = require("./web3/web3Manager");
+const { Web3Manager } = require("./web3/web3Manager");
 const { SERVER_PORT } = process.env;
 
-//mongoDb 실행
+const CA = "0x8FFB42137432a68f2fD73727381E330A530a923b";
+const Contract = require("../solidity/artifacts/TestTransition.json");
 
 (async () => {
   connectDb();
-  const transactionManager = new TransactionManager({ isTestNet: false });
-  await transactionManager.init();
+  const web3Manager = new Web3Manager({ networkName: "ganache" });
   try {
-    transactionManager.subscribeAllEvent();
-    transactionManager.initTransaction();
-    transactionManager.autoContractTanscation();
+    await web3Manager.init();
+    await web3Manager.setContract(CA, Contract);
+    const instance = web3Manager.getContractInstance();
+    web3Manager.subscribeNewBlockEvent();
+    web3Manager.subscribeTransationEvent(instance);
+    web3Manager.initTransaction();
+    web3Manager.autoContractTanscation();
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 })();
 
@@ -41,3 +45,4 @@ app.use("/block", blockRouter);
 app.use("/transaction", transactionRouter);
 
 app.use("/logs", logsRouter);
+
