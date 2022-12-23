@@ -12,14 +12,14 @@ const Main = () => {
   // console.log("@@@@@@@@@@@", location);
   useEffect(() => {
     axios({
-      url: `http://localhost:3000/transaction/searchByblockHash/${location.hash}/`, // 통신할 웹문서
-      method: 'get', // 통신할 방식
+      url: `http://localhost:3000/transaction/searchByblockHash/${location.hash}/`, 
+      method: 'get', 
     }).then((response) => {
       setTransaction(response.data.data)
 
       axios({
-        url: `http://localhost:3000/logs/searchByTransactionHash/${response.data.data[0].hash}/`, // 통신할 웹문서
-        method: 'get', // 통신할 방식
+        url: `http://localhost:3000/logs/searchByTransactionHash/${response.data.data[0].hash}/`,
+        method: 'get',
       }).then((response) => {
         setLogs(response.data.data)
       })
