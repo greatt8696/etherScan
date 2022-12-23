@@ -61,7 +61,7 @@ const Main = () => {
   const linkToGallery = () => nav("/gallery");
   const linkToMain = () => nav("/", { state: { id: 1 } });
 
-  console.log(location);
+  // console.log(location);
 
   const menu1Dropdown = [
     { title: "드롭다운1메뉴1", IconTag: Users, link: () => linkToGallery },

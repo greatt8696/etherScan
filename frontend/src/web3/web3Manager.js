@@ -1,14 +1,5 @@
 const Web3 = require("web3");
 
-const {
-  connectDb,
-  initDb,
-  Block,
-  Transaction,
-  Logs,
-  Nft,
-} = require("../mongoDb/models/index");
-
 class Web3Manager {
   constructor({ networkName }) {
     this.networkName = networkName;
@@ -56,12 +47,12 @@ class Web3Manager {
 
   getContractInstance = () => this.instance;
 
+  getWeb3Eth = () => this.web3.eth;
+
   getMethodsName = () =>
     Object.keys(this.methods).filter((_, idx) => idx % 3 === 0);
 
-  getWeb3Eth = () => this.web3.eth;
-
-  subscribeTransationEvent = (contractInstance) => {
+  subscribeTransationEvent = (contractInstance, callback) => {
     contractInstance.events
       .allEvents(async function (error, result) {
         if (!error) {
@@ -74,7 +65,7 @@ class Web3Manager {
         console.error(error);
       })
       .on("data", async function (result) {
-        await Logs.insertlogss(result);
+        callback(result);
       })
       .on("connected", function (subscriptionId) {
         console.log("subscribeTransactionID : ", subscriptionId);
@@ -120,7 +111,6 @@ class Web3Manager {
     return transactionInstance.methods[functionName](...args).send({
       ...other,
     });
-    return this;
   };
 
   autoContractTanscation = async (
