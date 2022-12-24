@@ -55,6 +55,7 @@ router.get("/searchByBlockNumber/:blockNumber/", async (req, res) => {
     return response(res, 404, false, false, error);
   }
 });
+
 router.get("/searchByblockHash/:blockHash/", async (req, res) => {
   try {
     const { blockHash } = req.params;

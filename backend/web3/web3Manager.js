@@ -123,7 +123,7 @@ class Web3Manager {
     return this;
   };
 
-  autoContractTanscation = async (
+  startTransactionBot = async (
     selectTable = ["faucetMint", "transfer", "burn"],
     loopSize = 3000,
     duration = 10000

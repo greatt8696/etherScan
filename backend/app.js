@@ -5,7 +5,13 @@ const app = express();
 const cors = require("cors");
 const api = require("./routers/api");
 const { blockRouter, transactionRouter, logsRouter } = require("./routers");
-const { connectDb, initDb, Transaction, Block, Logs } = require("./mongoDb/models");
+const {
+  connectDb,
+  initDb,
+  Transaction,
+  Block,
+  Logs,
+} = require("./mongoDb/models");
 const { Web3Manager } = require("./web3/web3Manager");
 const { SERVER_PORT } = process.env;
 
@@ -20,6 +26,10 @@ const Contract = require("../solidity/artifacts/TestTransition.json");
     await web3Manager.setContract(CA, Contract);
     const instance = web3Manager.getContractInstance();
     web3Manager
+      .subscribeTransationEvent(
+        instance,
+        async (result) => await Logs.insertlogss(result)
+      )
       .subscribeNewBlockEvent(async (result) => {
         await Block.insertBlock(result);
         const newTransaction = await web3Manager
@@ -27,18 +37,14 @@ const Contract = require("../solidity/artifacts/TestTransition.json");
           .getTransactionFromBlock(result.hash);
         await Transaction.insertTransaction(newTransaction);
       })
-      .subscribeTransationEvent(instance, async (result) => {
-        await Logs.insertlogss(result);
-      })
       .initTransaction()
-      .autoContractTanscation();
+      .startTransactionBot();
 
     //  체이닝을 쓰지 않은 경우
     //  web3Manager.subscribeNewBlockEvent();
     //  web3Manager.subscribeTransationEvent(instance);
     //  web3Manager.initTransaction();
-    //  web3Manager.autoContractTanscation();
-
+    //  web3Manager.startTransactionBot();
   } catch (error) {
     console.error(error);
   }
