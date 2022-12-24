@@ -120,13 +120,12 @@ class Web3Manager {
     return transactionInstance.methods[functionName](...args).send({
       ...other,
     });
-    return this;
   };
 
   startTransactionBot = async (
     selectTable = ["faucetMint", "transfer", "burn"],
     loopSize = 3000,
-    duration = 10000
+    duration = 80000
   ) => {
     let i = 0;
     const intervalId = setInterval(async () => {

@@ -15,7 +15,7 @@ const {
 const { Web3Manager } = require("./web3/web3Manager");
 const { SERVER_PORT } = process.env;
 
-const CA = "0x370F34e6f81777daBdEfFb8CC4Dc86ba4Df9B882";
+const CA = "0x43F2F33775f591E4D60393e7E74264d65Fb0A0F6";
 const Contract = require("../solidity/artifacts/TestTransition.json");
 
 (async () => {
@@ -30,7 +30,8 @@ const Contract = require("../solidity/artifacts/TestTransition.json");
         instance,
         async (result) => await Logs.insertlogss(result)
       )
-      .subscribeNewBlockEvent(async (result) => {
+      .subscribeNewBlockEvent(async () => {
+        const result = await web3Manager.getWeb3Eth().getBlock("latest")
         await Block.insertBlock(result);
         const newTransaction = await web3Manager
           .getWeb3Eth()

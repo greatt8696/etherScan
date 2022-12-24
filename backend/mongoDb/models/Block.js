@@ -21,22 +21,17 @@ const blockSchema = new Schema({
   gasLimit: { type: String },
   gasUsed: { type: String },
   timestamp: { type: String },
-  transactions: [transactionSchema],
+  transactions: [],
   uncles: { type: Array },
 });
 
 blockSchema.statics.insertBlocks = function (blocks) {
-  console.log("insertBlocks@@@@@@@@", blocks);
   return this.insertMany(blocks);
 };
 blockSchema.statics.insertBlock = async function (block) {
-  // const checkDuplicate = await this.find({ number: block.number });
-  // console.log(
-  //   "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",
-  //   block.number,
-  //   checkDuplicate
-  // );
-  // if (checkDuplicate.length !== 0) return;
+  const checkDuplicate = await this.find({ number: block.number });
+  if (!!checkDuplicate.length)
+    return this.replaceOne({ number: block.number }, block);
   return this.create(block);
 };
 
