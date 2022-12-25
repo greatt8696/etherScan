@@ -4,7 +4,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const api = require("./routers/api");
-const { blockRouter, transactionRouter, logsRouter } = require("./routers");
+const { blockRouter, transactionRouter, logsRouter, nftRouter } = require("./routers");
 const {
   connectDb,
   initDb,
@@ -22,8 +22,8 @@ const { CAs, Contracts } = require("../solidity");
   const web3Manager = new Web3Manager({ networkName: "ganache" });
   try {
     await web3Manager.init();
-    await web3Manager.setContract(CA, Contracts);
-    const instance = web3Manager.getContractInstance();
+    await web3Manager.setContracts(CAs, Contracts);
+    const instances = web3Manager.getContractInstances();
     const addLogsToDB = async (logs) => await Logs.insertlogss(logs);
 
     const addBlockAndTransactionToDB = async () => {
@@ -37,7 +37,7 @@ const { CAs, Contracts } = require("../solidity");
 
     web3Manager
       .subscribeNewBlockEvent(addBlockAndTransactionToDB)
-      .subscribeTransationEvent(instance, addLogsToDB)
+      .subscribeTransationEvent(instances, addLogsToDB)
       .initTransaction();
     //.startTransactionBot();
 
@@ -75,3 +75,5 @@ app.use("/block", blockRouter);
 app.use("/transaction", transactionRouter);
 
 app.use("/logs", logsRouter);
+
+app.use("/nft", nftRouter);

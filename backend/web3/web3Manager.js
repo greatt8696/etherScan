@@ -30,10 +30,13 @@ class Web3Manager {
     }
     return this;
   };
-  setContract = async (CA, contract) => {
-    this.instance = await new this.web3.eth.Contract(contract.abi, CA);
-    // console.log("@@@@setContract", this.instance);
-    this.methods = this.instance.methods;
+  setContracts = async (CAs, contracts) => {
+    this.instances = await Promise.all(
+      CAs.map(
+        async (CA, idx) => new this.web3.eth.Contract(contracts[idx].abi, CA)
+      )
+    );
+    this.methods = this.instances.map((instance) => instance.methods);
     return this;
   };
 
@@ -50,32 +53,34 @@ class Web3Manager {
 
   getAccounts = () => this.accounts;
 
-  getContractInstance = () => this.instance;
+  getContractInstances = () => this.instances;
 
   getMethodsName = () =>
     Object.keys(this.methods).filter((_, idx) => idx % 3 === 0);
 
   getWeb3Eth = () => this.web3.eth;
 
-  subscribeTransationEvent = (contractInstance, callback) => {
-    contractInstance.events
-      .allEvents(async function (error, result) {
-        if (!error) {
-          console.log(
-            "subscribeTransationEvent : ",
-            result.event,
-            result.returnValues
-          );
-        }
-        console.error(error);
-      })
-      .on("data", async function (result) {
-        callback(result);
-      })
-      .on("connected", function (subscriptionId) {
-        console.log("subscribeTransactionID : ", subscriptionId);
-      })
-      .on("error", console.error);
+  subscribeTransationEvent = (contractInstances, callback) => {
+    contractInstances.forEach((contractInstance) =>
+      contractInstance.events
+        .allEvents(async function (error, result) {
+          if (!error) {
+            console.log(
+              "subscribeTransationEvent : ",
+              result.event,
+              result.returnValues
+            );
+          }
+          console.error(error);
+        })
+        .on("data", async function (result) {
+          callback(result);
+        })
+        .on("connected", function (subscriptionId) {
+          console.log("subscribeTransactionID : ", subscriptionId);
+        })
+        .on("error", console.error)
+    );
     return this;
   };
 
@@ -110,7 +115,7 @@ class Web3Manager {
       to: "0x...",
       value: "0x...",
     },
-    transactionInstance = this.getContractInstance()
+    transactionInstance
   ) => {
     const { args, functionName, ...other } = inputObj;
     return transactionInstance.methods[functionName](...args).send({

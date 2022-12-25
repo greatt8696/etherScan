@@ -46,4 +46,4 @@ const test = [
 ];
 
 const findIdx = test.findIndex(({ number }) => number === 15);
-console.log(findIdx);
+// console.log(findIdx);
