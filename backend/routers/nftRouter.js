@@ -25,12 +25,29 @@ router.get("/getCA", async (req, res) => {
 
 router.get("/:nftName/metadata/:tokenId", async (req, res) => {
   const { nftName, tokenId } = req.params;
-  return res.sendFile(process.cwd() + `\\nftAssets\\${nftName}\\metadata\\${tokenId}.json`);
+  return res.sendFile(
+    process.cwd() + `\\nftAssets\\${nftName}\\metadata\\${tokenId}.json`
+  );
 });
 
 router.get("/:nftName/image/:tokenId", async (req, res) => {
   const { nftName, tokenId } = req.params;
-  return res.sendFile(process.cwd() + `\\nftAssets\\${nftName}\\original\\${tokenId}`);
+  return res.sendFile(
+    process.cwd() + `\\nftAssets\\${nftName}\\original\\${tokenId}`
+  );
+});
+
+router.get("/equipNft/miniting/:minitngSize", async (req, res) => {
+  try {
+    const { minitngSize } = req.params;
+
+    return response(res, 200, true, []);
+    
+
+  } catch (error) {
+
+    return response(res, 404, false, false, error);
+  }
 });
 
 // router.get("/metadatas/:id", async (req, res) => {
