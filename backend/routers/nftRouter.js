@@ -23,9 +23,14 @@ router.get("/getCA", async (req, res) => {
   }
 });
 
-router.get("/:nftName/getMetadatas", async (req, res) => {
-  const { nftName } = req.params;
-  return res.sendFile(process.cwd() + `\\nft\\${nftName}\\metadata\\test.text`);
+router.get("/:nftName/metadata/:tokenId", async (req, res) => {
+  const { nftName, tokenId } = req.params;
+  return res.sendFile(process.cwd() + `\\nftAssets\\${nftName}\\metadata\\${tokenId}`);
+});
+
+router.get("/:nftName/image/:tokenId", async (req, res) => {
+  const { nftName, tokenId } = req.params;
+  return res.sendFile(process.cwd() + `\\nftAssets\\${nftName}\\original\\${tokenId}`);
 });
 
 // router.get("/metadatas/:id", async (req, res) => {
