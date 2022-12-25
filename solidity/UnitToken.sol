@@ -12,7 +12,7 @@ contract UnitToken is ERC721, ERC721Enumerable, Ownable {
     uint256 private _MAX;
     uint256 private _start;
     uint256[] public tokenIds;
-    uint256 mintPrice = 10000;
+    uint256 mintPrice = 100;
 
     mapping(address => uint256[]) private _userOwnedTokenIds;
 
@@ -29,7 +29,7 @@ contract UnitToken is ERC721, ERC721Enumerable, Ownable {
     }
 
     function _baseURI() internal pure override returns (string memory) {
-        return "https://localhost:3000/unitNft/";
+        return "http://localhost:3000/nft/unitNft/metadata/";
     }
 
     function etherSafeMint() public payable returns (uint256) {

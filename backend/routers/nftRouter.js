@@ -25,7 +25,7 @@ router.get("/getCA", async (req, res) => {
 
 router.get("/:nftName/metadata/:tokenId", async (req, res) => {
   const { nftName, tokenId } = req.params;
-  return res.sendFile(process.cwd() + `\\nftAssets\\${nftName}\\metadata\\${tokenId}`);
+  return res.sendFile(process.cwd() + `\\nftAssets\\${nftName}\\metadata\\${tokenId}.json`);
 });
 
 router.get("/:nftName/image/:tokenId", async (req, res) => {
