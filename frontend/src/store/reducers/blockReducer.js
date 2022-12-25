@@ -1,7 +1,9 @@
 import { createAction, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import produce, { original } from "immer";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+useNavigate
 
 export const blockSlice = createSlice({
   name: "block",
@@ -48,7 +50,6 @@ export const getNewBlockByNumber = (blockNumber) => async (dispatch) => {
     position: "bottom-left",
     autoClose: 2000,
     hideProgressBar: false,
-    closeOnClick: true,
     pauseOnHover: true,
     draggable: false,
     progress: undefined,
