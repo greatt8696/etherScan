@@ -20,18 +20,3 @@ export default function configureStore() {
 
   return store;
 }
-
-// export default function configureStore() {
-//   const middlewares = [loggerMiddleware, thunkMiddleware];
-//   const middlewareEnhancer = applyMiddleware(...middlewares);
-
-//   const composedEnhancers = composeWithDevTools([...middlewareEnhancer]);
-
-//   const store = createStore(rootReducer, composedEnhancers);
-
-//   if (process.env.NODE_ENV !== "production" && module.hot) {
-//     module.hot.accept("./reducers", () => store.replaceReducer(rootReducer));
-//   }
-
-//   return store;
-// }

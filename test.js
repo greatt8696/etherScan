@@ -1,4 +1,4 @@
-async function send(
+/*async function send(
   web3,
   privateKey,
   gasPrice,
@@ -25,3 +25,25 @@ async function main() {
   const transaction = contract.methods.sendCoin(receiverAddress, numOfCoins);
   const receipt = await send(web3, privateKey, gasPrice, transaction);
 }
+*/
+
+const test = [
+  {
+    number: 1,
+  },
+  {
+    number: 2,
+  },
+  {
+    number: 3,
+  },
+  {
+    number: 4,
+  },
+  {
+    number: 5,
+  },
+];
+
+const findIdx = test.findIndex(({ number }) => number === 15);
+console.log(findIdx);

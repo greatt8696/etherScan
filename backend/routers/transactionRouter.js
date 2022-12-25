@@ -32,7 +32,7 @@ router.get("/page/:page/", async (req, res) => {
   }
 });
 
-router.get("/searchByHash/:hash/", async (req, res) => {
+router.get("/:hash/", async (req, res) => {
   try {
     const { hash } = req.params;
     const transaction = await Transaction.find({ hash });

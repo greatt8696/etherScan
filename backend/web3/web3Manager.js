@@ -121,7 +121,7 @@ class Web3Manager {
   startTransactionBot = async (
     selectTable = ["faucetMint", "transfer", "burn"],
     loopSize = 3000,
-    duration = 10000
+    duration = 5000
   ) => {
     let i = 0;
     const intervalId = setInterval(async () => {
