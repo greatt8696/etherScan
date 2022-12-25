@@ -1,6 +1,7 @@
 import { createAction, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import produce, { original } from "immer";
+import { toast } from "react-toastify";
 
 export const blockSlice = createSlice({
   name: "block",
@@ -42,8 +43,17 @@ export const getNewBlockByNumber = (blockNumber) => async (dispatch) => {
     url: `http://localhost:3000/block/${blockNumber}/`,
     method: "get",
   }).then((response) => response.data.data);
-  console.log("addNewBlock(newBlock)", newBlock);
   dispatch(addNewBlock(newBlock));
+  toast.info(`블록생성 : ${newBlock[0].hash}`, {
+    position: "bottom-left",
+    autoClose: 2000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: false,
+    progress: undefined,
+    theme: "colored",
+  });
 };
 
 export const selectBlock = (state) => state.block.blocks;

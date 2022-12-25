@@ -36,6 +36,7 @@ router.get("/searchByHash/:hash/", async (req, res) => {
   try {
     const { hash } = req.params;
     const transaction = await Transaction.find({ hash });
+    console.log(transaction);
     if (transaction.length === 0)
       throw new Error("이 해시에 해당하는 트랜잭션이 없다구욧");
     return response(res, 200, true, transaction);

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import Router from './router'
 import ScrollToTop from './components/scroll-to-top/Main'
@@ -11,35 +11,59 @@ import {
   getNewBlockByNumber,
   selectBlock,
 } from './store/reducers/blockReducer'
-import {getNewTransactionByHash, getTransactionsByPage } from './store/reducers/transactionReducer'
+import {
+  getNewTransactionByHash,
+  getTransactionsByPage,
+  selectTransaction,
+} from './store/reducers/transactionReducer'
 
+import { toast } from 'react-toastify'
 function App() {
   const [web3, account] = useWeb3()
+  const firstInit = useRef()
+  firstInit.current = true
   const dispatch = useDispatch()
+  const blocks = useSelector(selectBlock)
+  const transactions = useSelector(selectTransaction)
 
   useEffect(() => {
     const initWeb3AndContract = async () => {
-      web3.init()
+      if (firstInit.current) {
+        web3.init()
 
-      const [CA, contract] = await Promise.all([
-        axios('http://localhost:3000/api/getCA').then(
-          (result) => result.data.data,
-        ),
-        axios('http://localhost:3000/api/getContractJson').then(
-          (result) => result.data.data,
-        ),
-      ])
-      await web3.setContract(CA, contract)
+        const [CA, contract] = await Promise.all([
+          axios('http://localhost:3000/api/getCA').then(
+            (result) => result.data.data,
+          ),
+          axios('http://localhost:3000/api/getContractJson').then(
+            (result) => result.data.data,
+          ),
+        ])
+        await web3.setContract(CA, contract)
 
-      const instance = web3.getContractInstance()
+        const instance = web3.getContractInstance()
 
-      web3
-        .subscribeNewBlockEvent((event) => {
-          dispatch(getNewBlockByNumber(event.number))
-        })
-        .subscribeTransationEvent(instance, (event) => {
-          dispatch(getNewTransactionByHash(event.transactionHash))
-        })
+        web3
+          .subscribeNewBlockEvent((event) => {
+            if (
+              blocks.filter((block) => {
+                block.number === event.number
+              }).length === 0
+            ) {
+              dispatch(getNewBlockByNumber(event.number))
+            }
+          })
+          .subscribeTransationEvent(instance, (event) => {
+            if (
+              transactions.filter((transaction) => {
+                transaction.hash === event.transactionHash
+              }).length === 0
+            ) {
+              dispatch(getNewTransactionByHash(event.transactionHash))
+            }
+          })
+      }
+      firstInit.current = false
     }
     if (!!web3) initWeb3AndContract()
     console.log(web3)

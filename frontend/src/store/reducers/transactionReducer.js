@@ -1,6 +1,7 @@
 import { createAction, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import produce, { original } from "immer";
+import { toast } from "react-toastify";
 
 export const transactionSlice = createSlice({
   name: "transaction",
@@ -43,8 +44,18 @@ export const getNewTransactionByHash =
       url: `http://localhost:3000/transaction/searchByHash/${transactionHash}/`,
       method: "get",
     }).then((response) => response.data.data);
-    console.log("addNewTransaction(newTransaction)", newTransaction);
+    console.log("addNewTransaction(newTransaction)", newTransaction[0].hash);
     dispatch(addNewTransaction(newTransaction));
+    toast.success(`트랜잭션 : ${newTransaction[0].hash}`, {
+      position: "bottom-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: false,
+      progress: undefined,
+      theme: "colored",
+    });
   };
 
 export const selectTransaction = (state) => state.transaction.transactions;
