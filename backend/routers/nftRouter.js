@@ -39,7 +39,7 @@ router.get("/:nftName/image/:tokenId", async (req, res) => {
   );
 });
 
-router.get("/equipNft/miniting/:minitngSize", async (req, res) => {
+router.get("/equipNft/minting/:minitngSize", async (req, res) => {
   try {
     const { minitngSize } = req.params;
     return response(res, 200, true, minting(5, minitngSize));
