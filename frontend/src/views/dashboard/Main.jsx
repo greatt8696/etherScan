@@ -24,8 +24,8 @@ const Main = () => {
           key={idx}
           onClick={() => linkTo(block.hash)}
         >
-          {Object.keys(block).map((label) => (
-            <div className="flex overflow-hidden">
+          {Object.keys(block).map((label,idx) => (
+            <div className="flex overflow-hidden" key={idx}>
               <h1 className="mr-5">{label}</h1>
               <p>{block[label]}</p>
             </div>

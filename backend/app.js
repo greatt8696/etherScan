@@ -24,7 +24,8 @@ const { CA, Contract } = require("../solidity");
     await web3Manager.init();
     await web3Manager.setContract(CA, Contract);
     const instance = web3Manager.getContractInstance();
-    const addLogsToDB = async (logs) => await Logs.insertlogss(result);
+    const addLogsToDB = async (logs) => await Logs.insertlogss(logs);
+    
     const addBlockAndTransactionToDB = async () => {
       const completedBlock = await web3Manager.getWeb3Eth().getBlock("latest");
       await Block.insertBlock(completedBlock);

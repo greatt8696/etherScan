@@ -28,14 +28,11 @@ class Web3Manager {
       );
       this.accounts = [this.accounts.address];
     }
+    return this;
   };
-  // console.log(
-  // "this.instance.methods",
-  // this.instance.methods.faucetMint(2).send({ from: this.accounts[0] }).sign
-  //);
-
-  setContract = async (CA, Contract) => {
-    this.instance = await new this.web3.eth.Contract(Contract.abi, CA);
+  setContract = async (CA, contract) => {
+    this.instance = await new this.web3.eth.Contract(contract.abi, CA);
+    console.log("@@@@setContract", this.instance);
     this.methods = this.instance.methods;
     return this;
   };
@@ -60,7 +57,7 @@ class Web3Manager {
 
   getWeb3Eth = () => this.web3.eth;
 
-  subscribeTransationEvent = (contractInstance) => {
+  subscribeTransationEvent = (contractInstance, callback) => {
     contractInstance.events
       .allEvents(async function (error, result) {
         if (!error) {
@@ -73,7 +70,7 @@ class Web3Manager {
         console.error(error);
       })
       .on("data", async function (result) {
-        await Logs.insertlogss(result);
+        callback(result);
       })
       .on("connected", function (subscriptionId) {
         console.log("subscribeTransactionID : ", subscriptionId);
@@ -113,7 +110,7 @@ class Web3Manager {
       to: "0x...",
       value: "0x...",
     },
-    transactionInstance = this.instance
+    transactionInstance = this.getContractInstance()
   ) => {
     const { args, functionName, ...other } = inputObj;
     return transactionInstance.methods[functionName](...args).send({
@@ -124,7 +121,7 @@ class Web3Manager {
   startTransactionBot = async (
     selectTable = ["faucetMint", "transfer", "burn"],
     loopSize = 3000,
-    duration = 80000
+    duration = 10000
   ) => {
     let i = 0;
     const intervalId = setInterval(async () => {

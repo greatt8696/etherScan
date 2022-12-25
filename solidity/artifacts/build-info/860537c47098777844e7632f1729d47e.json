@@ -1,0 +1,68 @@
+{
+	"id": "860537c47098777844e7632f1729d47e",
+	"_format": "hh-sol-build-info-1",
+	"solcVersion": "0.8.17",
+	"solcLongVersion": "0.8.17+commit.8df45f5f",
+	"input": {
+		"language": "Solidity",
+		"sources": {
+			"test.sol": {
+				"content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.17;\r\n\r\n// contract Test {\r\n//     event Mint(address indexed minter, uint256 amount);\r\n//     event Transfer(address indexed from, address indexed to, uint256 amount);\r\n\r\n//     mapping(address => uint256) _balance;\r\n\r\n//     constructor() {\r\n//         mint(100000000000000);\r\n//     }\r\n\r\n//     function balanceOf(address account) public view returns (uint256) {\r\n//         return _balance[account];\r\n//     }\r\n\r\n//     function mint(uint256 amount) public {\r\n//         _balance[msg.sender] += amount;\r\n//         emit Mint(msg.sender, amount);\r\n//     }\r\n\r\n//     function transfer(address to, uint256 amount) public {\r\n//         _balance[msg.sender] -= amount;\r\n//         _balance[to] += amount;\r\n//         emit Transfer(msg.sender, to, amount);\r\n//     }\r\n// }\r\n"
+			}
+		},
+		"settings": {
+			"optimizer": {
+				"enabled": false,
+				"runs": 200
+			},
+			"outputSelection": {
+				"*": {
+					"": [
+						"ast"
+					],
+					"*": [
+						"abi",
+						"metadata",
+						"devdoc",
+						"userdoc",
+						"storageLayout",
+						"evm.legacyAssembly",
+						"evm.bytecode",
+						"evm.deployedBytecode",
+						"evm.methodIdentifiers",
+						"evm.gasEstimates",
+						"evm.assembly"
+					]
+				}
+			}
+		}
+	},
+	"output": {
+		"sources": {
+			"test.sol": {
+				"ast": {
+					"absolutePath": "test.sol",
+					"exportedSymbols": {},
+					"id": 2,
+					"license": "MIT",
+					"nodeType": "SourceUnit",
+					"nodes": [
+						{
+							"id": 1,
+							"literals": [
+								"solidity",
+								"^",
+								"0.8",
+								".17"
+							],
+							"nodeType": "PragmaDirective",
+							"src": "33:24:0"
+						}
+					],
+					"src": "33:793:0"
+				},
+				"id": 0
+			}
+		}
+	}
+}

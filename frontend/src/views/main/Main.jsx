@@ -1,6 +1,6 @@
-import React from "react";
-import { Outlet } from "react-router-dom";
-import NavBar from "../../components/nav-bar/Main";
+import React from 'react'
+import { Outlet } from 'react-router-dom'
+import NavBar from '../../components/nav-bar/Main'
 const Main = () => {
   return (
     <div>
@@ -15,7 +15,7 @@ const Main = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Main;
+export default Main

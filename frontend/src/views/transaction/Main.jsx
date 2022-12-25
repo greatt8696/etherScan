@@ -42,7 +42,7 @@ const Main = () => {
 
           {logs.map((log) => {
             return Object.keys(log).map((label, idx) => {
-              console.log(label)
+              // console.log(label)
               return (
                 <div className="flex overflow-ellipsis introX" key={idx}>
                   <h1 className="mr-5">{label}</h1>
