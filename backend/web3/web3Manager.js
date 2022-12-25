@@ -32,7 +32,7 @@ class Web3Manager {
   };
   setContract = async (CA, contract) => {
     this.instance = await new this.web3.eth.Contract(contract.abi, CA);
-    console.log("@@@@setContract", this.instance);
+    // console.log("@@@@setContract", this.instance);
     this.methods = this.instance.methods;
     return this;
   };

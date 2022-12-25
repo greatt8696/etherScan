@@ -4,7 +4,6 @@ const mongoDb = require("mongoose");
 const { Block } = require("./Block");
 const { Transaction } = require("./Transaction");
 const { Logs } = require("./Logs");
-const { Nft } = require("./Nft");
 
 const initDb = async (web3Manager) => {
   await Block.deleteAll();
@@ -18,7 +17,6 @@ const initDb = async (web3Manager) => {
 };
 
 const initBlocks = async (web3Manager) => {
-  // console.log(web3Manager.getAllBlocks);
   const blocks = await web3Manager.getAllBlocks();
   await Block.insertBlocks(blocks);
   return blocks;
@@ -41,4 +39,4 @@ const connectDb = async function () {
   return mongoDb.connect("mongodb://127.0.0.1:27017");
 };
 
-module.exports = { connectDb, initDb, Block, Transaction, Logs, Nft };
+module.exports = { connectDb, initDb, Block, Transaction, Logs };

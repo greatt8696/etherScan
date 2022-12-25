@@ -8,17 +8,22 @@ const Main = () => {
 
   const nav = useNavigate()
   const location = useParams()
+  const params = useLocation()
+  console.log(params)
+  const searchType = !!params ? params?.state?.searchType : 'blockHash'
+
   // const searchParams = new URLSearchParams(location);
-  // console.log("@@@@@@@@@@@", location);
   useEffect(() => {
+    const apiType =
+      searchType === 'blockHash' ? 'searchByblockHash' : 'searchByHash'
     axios({
-      url: `http://localhost:3000/transaction/searchByblockHash/${location.hash}/`, 
-      method: 'get', 
+      url: `http://localhost:3000/transaction/${apiType}/${location.hash}/`,
+      method: 'get',
     }).then((response) => {
       setTransaction(response.data.data)
 
       axios({
-        url: `http://localhost:3000/logs/searchByTransactionHash/${response.data.data[0].hash}/`,
+        url: `http://localhost:3000/logs/searchByTransactionHash/${location.hash}/`,
         method: 'get',
       }).then((response) => {
         setLogs(response.data.data)
@@ -43,6 +48,36 @@ const Main = () => {
           {logs.map((log) => {
             return Object.keys(log).map((label, idx) => {
               // console.log(label)
+              if (typeof log[label] === 'object')
+                return (
+                  <div key={idx}>
+                    <h1>{label}</h1>
+                    {log[label].map((content, idx) => (
+                      <div className="ml-10" key={idx}>
+                        {Object.keys(content).map((label1, idx) => {
+                          if (typeof content[label1] === 'object')
+                            return (
+                              <div key={idx}>
+                                <h1>{label1}</h1>
+                                {Object.keys(content[label1]).map(
+                                  (label11, idx) => {
+                                    return (
+                                      <div className="ml-10" key={idx}>
+                                        {JSON.stringify(
+                                          content[label1][label11],
+                                        )}
+                                      </div>
+                                    )
+                                  },
+                                )}
+                              </div>
+                            )
+                          return <div>{JSON.stringify(content[label1])}</div>
+                        })}
+                      </div>
+                    ))}
+                  </div>
+                )
               return (
                 <div className="flex overflow-ellipsis introX" key={idx}>
                   <h1 className="mr-5">{label}</h1>

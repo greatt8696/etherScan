@@ -41,14 +41,12 @@ const { CA, Contract } = require("../solidity");
       .initTransaction()
       .startTransactionBot();
 
-    /*  
-        체이닝을 쓴 경우
+    /*  체이닝
         web3Manager.subscribeNewBlockEvent(addBlockAndTransactionToDB)
                    .subscribeTransationEvent(instance, addLogsToDB)
                    .initTransaction()
                    .startTransactionBot();
         -----------------------------------------------
-        체이닝을 쓰지 않은 경우
         web3Manager.subscribeNewBlockEvent(addBlockAndTransactionToDB);
         web3Manager.subscribeTransationEvent(instance, addLogsToDB);
         web3Manager.initTransaction();
