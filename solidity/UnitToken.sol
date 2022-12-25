@@ -19,15 +19,13 @@ contract UnitToken is ERC721, ERC721Enumerable, Ownable {
     constructor(uint256 maxMint, address exchangeOperatorCA)
         ERC721("UnitToken", "UNT")
     {
-        //constructor(uint256 maxMint) ERC721("UnitToken", "UNT") {
         uint256 MINT_SIZE = 10;
-        for (uint256 idx = 0; idx < MINT_SIZE; idx++) {
-            ownerSafeMint(msg.sender);
-        }
-
-        setApprovalForAll(exchangeOperatorCA, true);
         _MAX = maxMint;
         _start = getRandomNumber();
+        for (uint256 idx = 0; idx < MINT_SIZE; idx++) {
+            ownerSafeMint();
+        }
+        setApprovalForAll(exchangeOperatorCA, true);
     }
 
     function _baseURI() internal pure override returns (string memory) {
@@ -35,7 +33,7 @@ contract UnitToken is ERC721, ERC721Enumerable, Ownable {
     }
 
     function etherSafeMint() public payable returns (uint256) {
-        require(mintPrice=)
+        require(mintPrice == msg.value, "invalid Ether");
         require(_tokenIdCounter.current() < _MAX, "max mint");
         uint256 tokenId = ((_start + _tokenIdCounter.current()) % _MAX) + 1;
         _tokenIdCounter.increment();
@@ -53,12 +51,12 @@ contract UnitToken is ERC721, ERC721Enumerable, Ownable {
         return rand;
     }
 
-    function ownerSafeMint(address to) public onlyOwner returns (uint256) {
+    function ownerSafeMint() public onlyOwner returns (uint256) {
         require(_tokenIdCounter.current() < _MAX, "max mint");
         uint256 tokenId = ((_start + _tokenIdCounter.current()) % _MAX) + 1;
         _tokenIdCounter.increment();
         tokenIds.push(tokenId);
-        _safeMint(to, tokenId);
+        _safeMint(msg.sender, tokenId);
         return tokenId;
     }
 

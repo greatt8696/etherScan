@@ -25,6 +25,8 @@ contract NftExchanger {
     );
     event CheckId(address indexed CA);
 
+    event Minting(address CA, string uri, address indexed minter);
+
     struct SaleInfo {
         address onwer;
         uint256 tokenId;
@@ -50,6 +52,22 @@ contract NftExchanger {
 
     function getNftList(string memory nftName) public view returns (address) {
         return nftList[nftName];
+    }
+
+    function mint(string memory nftKey, string memory uri)
+        public
+        payable
+        returns (bool)
+    {
+        (bool success, bytes memory data) = nftList[nftKey].call(
+            abi.encodeWithSignature(
+                "exchangeMint(address,string)",
+                msg.sender,
+                uri
+            )
+        );
+        emit Minting(nftList[nftKey], uri, msg.sender);
+        return success;
     }
 
     function applySale(

@@ -60,6 +60,31 @@
 					},
 					{
 						"indexed": false,
+						"internalType": "string",
+						"name": "uri",
+						"type": "string"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "minter",
+						"type": "address"
+					}
+				],
+				"name": "Minting",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "CA",
+						"type": "address"
+					},
+					{
+						"indexed": false,
 						"internalType": "uint256",
 						"name": "tokenId",
 						"type": "uint256"
@@ -267,6 +292,30 @@
 				"inputs": [
 					{
 						"internalType": "string",
+						"name": "nftKey",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "uri",
+						"type": "string"
+					}
+				],
+				"name": "mint",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
 						"name": "",
 						"type": "string"
 					}
@@ -327,11 +376,11 @@
 			]
 		},
 		"nftExchanger.sol": {
-			"keccak256": "0x087968d27c3b97679126a6a95690e175a749b899676fd3db6f1fbbd1247877b3",
+			"keccak256": "0xd65da7c4376794605f55cc4bc21148661ea5aef8a06de38fad457eb785b1b408",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://805a889d29cf413fb5139f2f174c40bd89b51ca3afdbf3abea0fb7cb1bd0e31f",
-				"dweb:/ipfs/QmdBiqU2qxzVaxxRR2iCghf1cL57goPCvWSi6nFQxYNoru"
+				"bzz-raw://10a7205d5340fb8de189991af5c8f6e0757b6d83d2bc246b545fc629a4218f86",
+				"dweb:/ipfs/QmRX4WHLqReL5wfgcFUDZYjk1EHajNjmYoEqRts4CEwxBa"
 			]
 		}
 	},

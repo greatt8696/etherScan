@@ -318,13 +318,7 @@
 				"type": "function"
 			},
 			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "to",
-						"type": "address"
-					}
-				],
+				"inputs": [],
 				"name": "ownerSafeMint",
 				"outputs": [
 					{
@@ -770,11 +764,11 @@
 			]
 		},
 		"UnitToken.sol": {
-			"keccak256": "0x4412de910d9f1169898c835118321864bc4dbe3c3fa859d793220d863f5e5be5",
+			"keccak256": "0xa306a192673a23d6676fc3cfa8e28cc2e87eec4606cdb41d1e6904c545bb0532",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://4ebdf27c9dda81e56929783b2aa66e2cbda968524e39229917767d2988c159bb",
-				"dweb:/ipfs/QmQ8DMTFKKNcWsVLVRMJJTfgM29umzPFsPZAJWW426fpjC"
+				"bzz-raw://3a806f3c1b879bbcebac1291a6972d55043ad14b10e87d7b070713e54fb0989d",
+				"dweb:/ipfs/QmPtiof5zLXfEBM4x7uTbuPKkXoz5jUK1xuUGZgESDNfWd"
 			]
 		}
 	},

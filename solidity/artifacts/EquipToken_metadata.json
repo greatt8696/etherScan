@@ -148,6 +148,24 @@
 				"type": "function"
 			},
 			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "to",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "uri",
+						"type": "string"
+					}
+				],
+				"name": "exchangeMint",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
 				"inputs": [],
 				"name": "getAllTokens",
 				"outputs": [
@@ -174,6 +192,25 @@
 						"internalType": "address",
 						"name": "",
 						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					}
+				],
+				"name": "getOwnedTokenIds",
+				"outputs": [
+					{
+						"internalType": "uint256[]",
+						"name": "",
+						"type": "uint256[]"
 					}
 				],
 				"stateMutability": "view",
@@ -227,6 +264,13 @@
 					}
 				],
 				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "ownerMint",
+				"outputs": [],
+				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
@@ -686,11 +730,11 @@
 			]
 		},
 		"EquipToken.sol": {
-			"keccak256": "0xf61dd5eb15ceec2ddb9fc3dff2b679b1ead8f18d2b827ff9f3ebffefd05c89a3",
+			"keccak256": "0x66e63d4f06b25db638d929c02fe40bc61f10764ec2f02d134e7083555c793076",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://421bc6e54ef933f4099eb395a6b1e07d3002f29189cebf2b92ced6ee30426e7a",
-				"dweb:/ipfs/QmSWSqJmJJvaQKWrnN4fJnyNPMpKwqwvTisDaXYYWN3JkM"
+				"bzz-raw://43ba8da1e112ded0cb8aaf430eb443cb8f82154398ebf19de33332970c36998f",
+				"dweb:/ipfs/QmeaUFMEDjKytycTM9nUaamgq5NBQdr3ZG1dtEcxABs4m5"
 			]
 		}
 	},
