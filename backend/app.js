@@ -53,6 +53,7 @@ const { CA, Contract } = require("../solidity");
         web3Manager.startTransactionBot();
         -----------------------------------------------
     */
+   
   } catch (error) {
     console.error(error);
   }
