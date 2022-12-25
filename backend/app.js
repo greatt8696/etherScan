@@ -15,8 +15,7 @@ const {
 const { Web3Manager } = require("./web3/web3Manager");
 const { SERVER_PORT } = process.env;
 
-const CA = "0x43F2F33775f591E4D60393e7E74264d65Fb0A0F6";
-const Contract = require("../solidity/artifacts/TestTransition.json");
+const { CA, Contract } = require("../solidity");
 
 (async () => {
   connectDb();
@@ -25,27 +24,36 @@ const Contract = require("../solidity/artifacts/TestTransition.json");
     await web3Manager.init();
     await web3Manager.setContract(CA, Contract);
     const instance = web3Manager.getContractInstance();
+    const addLogsToDB = async (logs) => await Logs.insertlogss(result);
+    const addBlockAndTransactionToDB = async () => {
+      const completedBlock = await web3Manager.getWeb3Eth().getBlock("latest");
+      await Block.insertBlock(completedBlock);
+      const newTransaction = await web3Manager
+        .getWeb3Eth()
+        .getTransactionFromBlock(completedBlock.hash);
+      await Transaction.insertTransaction(newTransaction);
+    };
+
     web3Manager
-      .subscribeTransationEvent(
-        instance,
-        async (result) => await Logs.insertlogss(result)
-      )
-      .subscribeNewBlockEvent(async () => {
-        const result = await web3Manager.getWeb3Eth().getBlock("latest")
-        await Block.insertBlock(result);
-        const newTransaction = await web3Manager
-          .getWeb3Eth()
-          .getTransactionFromBlock(result.hash);
-        await Transaction.insertTransaction(newTransaction);
-      })
+      .subscribeNewBlockEvent(addBlockAndTransactionToDB)
+      .subscribeTransationEvent(instance, addLogsToDB)
       .initTransaction()
       .startTransactionBot();
 
-    //  체이닝을 쓰지 않은 경우
-    //  web3Manager.subscribeNewBlockEvent();
-    //  web3Manager.subscribeTransationEvent(instance);
-    //  web3Manager.initTransaction();
-    //  web3Manager.startTransactionBot();
+    /*  
+        체이닝을 쓴 경우
+        web3Manager.subscribeNewBlockEvent(addBlockAndTransactionToDB)
+                   .subscribeTransationEvent(instance, addLogsToDB)
+                   .initTransaction()
+                   .startTransactionBot();
+        -----------------------------------------------
+        체이닝을 쓰지 않은 경우
+        web3Manager.subscribeNewBlockEvent(addBlockAndTransactionToDB);
+        web3Manager.subscribeTransationEvent(instance, addLogsToDB);
+        web3Manager.initTransaction();
+        web3Manager.startTransactionBot();
+        -----------------------------------------------
+    */
   } catch (error) {
     console.error(error);
   }

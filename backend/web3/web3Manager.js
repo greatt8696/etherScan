@@ -28,12 +28,11 @@ class Web3Manager {
       );
       this.accounts = [this.accounts.address];
     }
-    //console.log(
-    // "this.instance.methods",
-    // this.instance.methods.faucetMint(2).send({ from: this.accounts[0] }).sign
-    //);
-    return this;
   };
+  // console.log(
+  // "this.instance.methods",
+  // this.instance.methods.faucetMint(2).send({ from: this.accounts[0] }).sign
+  //);
 
   setContract = async (CA, Contract) => {
     this.instance = await new this.web3.eth.Contract(Contract.abi, CA);
@@ -156,7 +155,6 @@ class Web3Manager {
             from: this.getAccounts()[0],
           };
           break;
-
         default:
           break;
       }
