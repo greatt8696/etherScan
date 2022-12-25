@@ -38,7 +38,7 @@ const { CAs, Contracts } = require("../solidity");
     web3Manager
       .subscribeNewBlockEvent(addBlockAndTransactionToDB)
       .subscribeTransationEvent(instances, addLogsToDB)
-      .initTransaction();
+    //  .initTransaction();
     //.startTransactionBot();
 
     /*  체이닝
