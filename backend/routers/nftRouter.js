@@ -7,6 +7,8 @@ const { response } = require("../util/serverUtil");
 const contractJson = require("../../solidity/artifacts/TestTransition.json");
 const { CA } = require("../../solidity");
 
+const { minting } = require("../jsonGenerator/generateEquipJson");
+
 router.get("/getContractJson", async (req, res) => {
   try {
     return response(res, 200, true, contractJson);
@@ -40,12 +42,8 @@ router.get("/:nftName/image/:tokenId", async (req, res) => {
 router.get("/equipNft/miniting/:minitngSize", async (req, res) => {
   try {
     const { minitngSize } = req.params;
-
-    return response(res, 200, true, []);
-    
-
+    return response(res, 200, true, minting(5, minitngSize));
   } catch (error) {
-
     return response(res, 404, false, false, error);
   }
 });
