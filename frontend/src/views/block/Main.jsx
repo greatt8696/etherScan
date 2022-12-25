@@ -28,7 +28,11 @@ const Main = () => {
       {block.map((block, idx) => (
         <div className="text-white p-5 bg-slate-600 introY" key={idx}>
           {Object.keys(block).map((label, idx) => (
-            <div className="flex overflow-hidden introX" key={idx}>
+            <div
+              className="flex overflow-hidden introX"
+              key={idx}
+              style={{animationDelay : `${idx * 20}ms`}}
+            >
               <h1 className="mr-5">{label}</h1>
               {label === 'transactions' ? (
                 <div>

@@ -28,11 +28,15 @@ const Main = () => {
       <div className="col-span-1  gap-2">
         {blocks.map((block, idx) => (
           <div
-            className="text-white p-5 bg-slate-600  my-2 rounded-md "
+            className="text-white p-5 bg-slate-600  my-2 rounded-md introY"
             key={idx}
             onClick={() => linkToBlock(block.number)}
+            style={{ animationDelay: `${idx * 40}ms` }}
           >
-            <div className="flex overflow-hidden flex-col introX" key={idx}>
+            <div
+              className="flex overflow-hidden flex-col introX"
+              key={idx}
+            >
               <h1 className="mr-5">블록번호 : {block.number}</h1>
               <p className="whitespace-nowrap">블록해시 : {block.hash}</p>
             </div>
@@ -45,8 +49,12 @@ const Main = () => {
             className="text-white p-5 bg-slate-600 my-2 rounded-md introX"
             key={idx}
             onClick={() => linkToTransaction(transaction.hash)}
+            style={{ animationDelay: `${idx * 40}ms` }}
           >
-            <div className="flex overflow-hidden flex-col introX" key={idx}>
+            <div
+              className="flex overflow-hidden flex-col introX"
+              key={idx}
+            >
               {/* <h1 className="mr-5">트랜잭션해시 : {transaction.number}</h1> */}
               <p className="text-ellipsis">트랜잭션해시 : {transaction.hash}</p>
             </div>

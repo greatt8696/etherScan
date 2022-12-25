@@ -9,7 +9,6 @@ const Main = () => {
   const nav = useNavigate()
   const location = useParams()
   const params = useLocation()
-  console.log(params)
   const searchType = !!params ? params?.state?.searchType : 'blockHash'
 
   // const searchParams = new URLSearchParams(location);
@@ -31,15 +30,16 @@ const Main = () => {
     })
   }, [])
 
-  const linkToTransaction = () => {
-    nav()
-  }
   return (
     <div className="grid grid-cols-1 gap-2 introY">
       {transaction.map((block, idx) => (
         <div className="text-white p-5 bg-slate-600 introY" key={idx}>
           {Object.keys(block).map((label, idx) => (
-            <div className="flex overflow-hidden introX" key={idx}>
+            <div
+              className="flex overflow-hidden introX"
+              key={idx}
+              style={{ animationDelay: `${idx * 20}ms` }}
+            >
               <h1 className="mr-5">{label}</h1>
               <p>{block[label]}</p>
             </div>
@@ -50,19 +50,24 @@ const Main = () => {
               // console.log(label)
               if (typeof log[label] === 'object')
                 return (
-                  <div key={idx}>
+                  <div  key={idx} className='introX' style={{ animationDelay: `${idx * 100}ms` }}>
                     <h1>{label}</h1>
                     {log[label].map((content, idx) => (
-                      <div className="ml-10" key={idx}>
+                      <div
+                        className="ml-10 introX"
+                        key={idx}
+                        style={{ animationDelay: `${idx * 100}ms` }}
+                      >
                         {Object.keys(content).map((label1, idx) => {
                           if (typeof content[label1] === 'object')
                             return (
-                              <div key={idx}>
+                              <div key={idx} className='introX' style={{ animationDelay: `${idx * 100}ms` }}>
                                 <h1>{label1}</h1>
                                 {Object.keys(content[label1]).map(
                                   (label11, idx) => {
                                     return (
-                                      <div className="ml-10" key={idx}>
+                                      <div className="ml-10 introX" key={idx} 
+                                      style={{animationDelay : `${idx * 100}ms`}}>
                                         {JSON.stringify(
                                           content[label1][label11],
                                         )}

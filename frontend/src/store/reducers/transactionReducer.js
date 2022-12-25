@@ -40,7 +40,7 @@ export const getTransactionsByPage =
 export const getNewTransactionByHash =
   (transactionHash) => async (dispatch) => {
     const newTransaction = await axios({
-      url: `http://localhost:3000/transaction/${transactionHash}/`,
+      url: `http://localhost:3000/transaction/searchByHash/${transactionHash}/`,
       method: "get",
     }).then((response) => response.data.data);
     console.log("addNewTransaction(newTransaction)", newTransaction);
