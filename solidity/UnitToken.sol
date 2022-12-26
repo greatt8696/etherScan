@@ -29,7 +29,7 @@ contract UnitToken is ERC721, ERC721Enumerable, Ownable {
     }
 
     function _baseURI() internal pure override returns (string memory) {
-        return "http://localhost:3000/nft/unitNft/metadata/";
+        return "http://192.168.0.116:3000/nft/unitNft/metadata/";
     }
 
     function etherSafeMint() public payable returns (uint256) {

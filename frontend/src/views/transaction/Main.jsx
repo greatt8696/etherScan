@@ -1,34 +1,34 @@
-import axios from 'axios'
-import React, { useEffect, useState } from 'react'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 const Main = () => {
-  const [transaction, setTransaction] = useState([])
-  const [logs, setLogs] = useState([])
+  const [transaction, setTransaction] = useState([]);
+  const [logs, setLogs] = useState([]);
 
-  const nav = useNavigate()
-  const location = useParams()
-  const params = useLocation()
-  const searchType = !!params ? params?.state?.searchType : 'blockHash'
+  const nav = useNavigate();
+  const location = useParams();
+  const params = useLocation();
+  const searchType = !!params ? params?.state?.searchType : "blockHash";
 
   // const searchParams = new URLSearchParams(location);
   useEffect(() => {
     const apiType =
-      searchType === 'blockHash' ? 'searchByblockHash' : 'searchByHash'
+      searchType === "blockHash" ? "searchByblockHash" : "searchByHash";
     axios({
-      url: `http://localhost:3000/transaction/${apiType}/${location.hash}/`,
-      method: 'get',
+      url: `http://192.168.0.116:3000/transaction/${apiType}/${location.hash}/`,
+      method: "get",
     }).then((response) => {
-      setTransaction(response.data.data)
+      setTransaction(response.data.data);
 
       axios({
-        url: `http://localhost:3000/logs/searchByTransactionHash/${location.hash}/`,
-        method: 'get',
+        url: `http://192.168.0.116:3000/logs/searchByTransactionHash/${location.hash}/`,
+        method: "get",
       }).then((response) => {
-        setLogs(response.data.data)
-      })
-    })
-  }, [])
+        setLogs(response.data.data);
+      });
+    });
+  }, []);
 
   return (
     <div className="grid grid-cols-1 gap-2 introY">
@@ -48,9 +48,13 @@ const Main = () => {
           {logs.map((log) => {
             return Object.keys(log).map((label, idx) => {
               // console.log(label)
-              if (typeof log[label] === 'object')
+              if (typeof log[label] === "object")
                 return (
-                  <div  key={idx} className='introX' style={{ animationDelay: `${idx * 100}ms` }}>
+                  <div
+                    key={idx}
+                    className="introX"
+                    style={{ animationDelay: `${idx * 100}ms` }}
+                  >
                     <h1>{label}</h1>
                     {log[label].map((content, idx) => (
                       <div
@@ -59,42 +63,51 @@ const Main = () => {
                         style={{ animationDelay: `${idx * 100}ms` }}
                       >
                         {Object.keys(content).map((label1, idx) => {
-                          if (typeof content[label1] === 'object')
+                          if (typeof content[label1] === "object")
                             return (
-                              <div key={idx} className='introX' style={{ animationDelay: `${idx * 100}ms` }}>
+                              <div
+                                key={idx}
+                                className="introX"
+                                style={{ animationDelay: `${idx * 100}ms` }}
+                              >
                                 <h1>{label1}</h1>
                                 {Object.keys(content[label1]).map(
                                   (label11, idx) => {
                                     return (
-                                      <div className="ml-10 introX" key={idx} 
-                                      style={{animationDelay : `${idx * 100}ms`}}>
+                                      <div
+                                        className="ml-10 introX"
+                                        key={idx}
+                                        style={{
+                                          animationDelay: `${idx * 100}ms`,
+                                        }}
+                                      >
                                         {JSON.stringify(
-                                          content[label1][label11],
+                                          content[label1][label11]
                                         )}
                                       </div>
-                                    )
-                                  },
+                                    );
+                                  }
                                 )}
                               </div>
-                            )
-                          return <div>{JSON.stringify(content[label1])}</div>
+                            );
+                          return <div>{JSON.stringify(content[label1])}</div>;
                         })}
                       </div>
                     ))}
                   </div>
-                )
+                );
               return (
                 <div className="flex overflow-ellipsis introX" key={idx}>
                   <h1 className="mr-5">{label}</h1>
                   <p>{JSON.stringify(log[label])}</p>
                 </div>
-              )
-            })
+              );
+            });
           })}
         </div>
       ))}
     </div>
-  )
-}
+  );
+};
 
-export default Main
+export default Main;

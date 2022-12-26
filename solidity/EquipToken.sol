@@ -48,7 +48,7 @@ contract EquipToken is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
     }
 
     function ownerMint() public onlyOwner {
-        string memory _uri = "http://localhost:3000/api/equipNft/test.json";
+        string memory _uri = "http://192.168.0.116:3000/api/equipNft/test.json";
         safeMint(msg.sender, _uri);
     }
 
