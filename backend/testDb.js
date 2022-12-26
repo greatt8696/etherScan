@@ -4,7 +4,7 @@ const {
   Block,
   Transaction,
   Logs,
-  Nft,
+  NftCounter,
 } = require("./mongoDb/models/index");
 
 (async () => {
@@ -25,6 +25,20 @@ const {
   // const size = await Block.count("_id");
   // console.log(size);
 
-  const block = await Block.find({ number: 5 });
-  console.log(block);
+  // const block = await Block.find({ number: 5 });
+  // console.log(block);
+
+  // const counter = await NftCounter.initCounter();
+  // console.log(counter);
+  // await NftCounter.increase();
+  // console.log(await NftCounter.getCounter());
 })();
+
+connectDb().then(async () => {
+  // const counter = await NftCounter.initCounter();
+  console.log(await NftCounter.increase());
+  console.log(await NftCounter.increase());
+  console.log(await NftCounter.increase());
+  console.log(await NftCounter.setCounter(5));
+  console.log(await NftCounter.getCounter());
+});

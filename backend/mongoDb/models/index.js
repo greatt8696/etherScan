@@ -4,6 +4,7 @@ const mongoDb = require("mongoose");
 const { Block } = require("./Block");
 const { Transaction } = require("./Transaction");
 const { Logs } = require("./Logs");
+const { NftCounter } = require("./NftCounter");
 
 const initDb = async (web3Manager) => {
   await Block.deleteAll();
@@ -39,4 +40,4 @@ const connectDb = async function () {
   return mongoDb.connect("mongodb://127.0.0.1:27017");
 };
 
-module.exports = { connectDb, initDb, Block, Transaction, Logs };
+module.exports = { connectDb, initDb, Block, Transaction, Logs, NftCounter };

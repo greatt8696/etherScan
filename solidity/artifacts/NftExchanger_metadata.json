@@ -376,11 +376,11 @@
 			]
 		},
 		"nftExchanger.sol": {
-			"keccak256": "0xd65da7c4376794605f55cc4bc21148661ea5aef8a06de38fad457eb785b1b408",
+			"keccak256": "0x08f200ddaae6ce18e565582fc34da52a8c363237044e9ab1e3bef704bed1e711",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://10a7205d5340fb8de189991af5c8f6e0757b6d83d2bc246b545fc629a4218f86",
-				"dweb:/ipfs/QmRX4WHLqReL5wfgcFUDZYjk1EHajNjmYoEqRts4CEwxBa"
+				"bzz-raw://50e7f2ff5d6d7ceb445825aabf4b1bc240dba521bfc013ee3cf4c8d1707320d0",
+				"dweb:/ipfs/QmXSF4rSoo7YPo9k1vRZ1GtTzMfMLh7DMJz3dGfAbSMJzh"
 			]
 		}
 	},

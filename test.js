@@ -27,23 +27,42 @@ async function main() {
 }
 */
 
-const test = [
-  {
-    number: 1,
-  },
-  {
-    number: 2,
-  },
-  {
-    number: 3,
-  },
-  {
-    number: 4,
-  },
-  {
-    number: 5,
-  },
-];
+// const test = [
+//   {
+//     number: 1,
+//   },
+//   {
+//     number: 2,
+//   },
+//   {
+//     number: 3,
+//   },
+//   {
+//     number: 4,
+//   },
+//   {
+//     number: 5,
+//   },
+// ];
 
-const findIdx = test.findIndex(({ number }) => number === 15);
-// console.log(findIdx);
+// const findIdx = test.findIndex(({ number }) => number === 15);
+// // console.log(findIdx);
+const mongoDb = require("mongoose");
+const { connectDb } = require("./backend/mongoDb/models/");
+const { Schema } = mongoDb;
+
+const nftCounterSchema = new Schema({
+  id: { type: Number, default: 0, index },
+  counter: { type: Number, default: 0 },
+});
+
+nftCounterSchema.statics.initCounter = async function () {
+  return this.create();
+};
+
+const nftCounter = mongoDb.model("nftCounter", nftCounterSchema);
+
+(async () => {
+  await connectDb();
+  console.log(await nftCounter.initCounter());
+})();
