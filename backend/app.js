@@ -25,7 +25,7 @@ const { CA, Contract } = require("../solidity");
     await web3Manager.setContract(CA, Contract);
     const instance = web3Manager.getContractInstance();
     const addLogsToDB = async (logs) => await Logs.insertlogss(logs);
-    
+
     const addBlockAndTransactionToDB = async () => {
       const completedBlock = await web3Manager.getWeb3Eth().getBlock("latest");
       await Block.insertBlock(completedBlock);
@@ -39,7 +39,7 @@ const { CA, Contract } = require("../solidity");
       .subscribeNewBlockEvent(addBlockAndTransactionToDB)
       .subscribeTransationEvent(instance, addLogsToDB)
       .initTransaction()
-      //.startTransactionBot();
+      .startTransactionBot();
 
     /*  체이닝
         web3Manager.subscribeNewBlockEvent(addBlockAndTransactionToDB)
@@ -53,7 +53,6 @@ const { CA, Contract } = require("../solidity");
         web3Manager.startTransactionBot();
         -----------------------------------------------
     */
-   
   } catch (error) {
     console.error(error);
   }

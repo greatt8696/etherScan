@@ -1,28 +1,31 @@
-import axios from 'axios'
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useLocation, useNavigate } from 'react-router-dom'
-import { getBlocksByPage, selectBlock } from '../../store/reducers/blockReducer'
-import { selectTransaction } from '../../store/reducers/transactionReducer'
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import {
+  getBlocksByPage,
+  selectBlock,
+} from "../../store/reducers/blockReducer";
+import { selectTransaction } from "../../store/reducers/transactionReducer";
 
 const Main = () => {
   // const [blocks, setBlocks] = useState([])
-  const nav = useNavigate()
-  const blocks = useSelector(selectBlock)
-  const transactions = useSelector(selectTransaction)
+  const nav = useNavigate();
+  const blocks = useSelector(selectBlock);
+  const transactions = useSelector(selectTransaction);
 
   const linkToBlock = (blockNumber) =>
     nav(`blockByNumber/${blockNumber}`, {
       state: {
-        searchType: 'blockNumber',
+        searchType: "blockNumber",
       },
-    })
+    });
   const linkToTransaction = (blockHash) =>
     nav(`transactionByHash/${blockHash}`, {
       state: {
-        searchType: 'transactionHash',
+        searchType: "transactionHash",
       },
-    })
+    });
   return (
     <div className="grid grid-cols-2 gap-2">
       <div className="col-span-1  gap-2">
@@ -33,11 +36,7 @@ const Main = () => {
             onClick={() => linkToBlock(block.number)}
             style={{ animationDelay: `${idx * 40}ms` }}
           >
-            <div
-              className="flex overflow-hidden flex-col introX"
-              key={idx}
-            >
-              <h1 className="mr-5">블록번호 : {block.number}</h1>
+            <div className="flex overflow-hidden flex-col introX" key={idx}>
               <p className="whitespace-nowrap">블록해시 : {block.hash}</p>
             </div>
           </div>
@@ -51,10 +50,7 @@ const Main = () => {
             onClick={() => linkToTransaction(transaction.hash)}
             style={{ animationDelay: `${idx * 40}ms` }}
           >
-            <div
-              className="flex overflow-hidden flex-col introX"
-              key={idx}
-            >
+            <div className="flex overflow-hidden flex-col introX" key={idx}>
               {/* <h1 className="mr-5">트랜잭션해시 : {transaction.number}</h1> */}
               <p className="text-ellipsis">트랜잭션해시 : {transaction.hash}</p>
             </div>
@@ -62,10 +58,10 @@ const Main = () => {
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Main
+export default Main;
 
 /** 
   <div className="grid grid-cols-2 gap-2">

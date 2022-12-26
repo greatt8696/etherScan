@@ -15,7 +15,7 @@ class Web3Manager {
     this.web3 = new Web3(
       Web3.givenProvider || networkName === "goerli"
         ? "wss://eth-goerli.g.alchemy.com/v2/_NSjX6xORhXSJKw214enYTvnDCiRVGa0"
-        : "ws://127.0.0.1:8545"
+        : "ws://192.168.0.116:8545"
     );
     this.latestBlockNumber = [];
   }

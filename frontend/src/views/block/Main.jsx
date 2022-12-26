@@ -1,28 +1,28 @@
-import axios from 'axios'
-import React, { useEffect, useState } from 'react'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 const Main = () => {
-  const [block, setBlock] = useState([])
+  const [block, setBlock] = useState([]);
 
-  const nav = useNavigate()
-  const location = useParams()
+  const nav = useNavigate();
+  const location = useParams();
 
   useEffect(() => {
     axios({
-      url: `http://localhost:3000/block/${location.blockNumber}/`,
-      method: 'get',
+      url: `http://192.168.0.116:3000/block/${location.blockNumber}/`,
+      method: "get",
     }).then((response) => {
-      setBlock(response.data.data)
-    })
-  }, [])
+      setBlock(response.data.data);
+    });
+  }, []);
 
   const linkToTransaction = (blockHash) =>
     nav(`transactionByHash/${blockHash}`, {
       state: {
-        searchType: 'transactionHash',
+        searchType: "transactionHash",
       },
-    })
+    });
   return (
     <div className="grid grid-cols-1 gap-2 introY">
       {block.map((block, idx) => (
@@ -31,10 +31,10 @@ const Main = () => {
             <div
               className="flex overflow-hidden introX"
               key={idx}
-              style={{animationDelay : `${idx * 20}ms`}}
+              style={{ animationDelay: `${idx * 20}ms` }}
             >
               <h1 className="mr-5">{label}</h1>
-              {label === 'transactions' ? (
+              {label === "transactions" ? (
                 <div>
                   {block[label].map((transactionHash, idx) => (
                     <div
@@ -54,7 +54,7 @@ const Main = () => {
         </div>
       ))}
     </div>
-  )
-}
+  );
+};
 
-export default Main
+export default Main;
