@@ -1,34 +1,60 @@
 const fs = require("fs");
 const path = require("path");
-const { NAME, ABILITY, BACKGROUND, FACE } = require("../nftAssets/unitNft");
+const {
+  NAME,
+  ABILITY,
+  BACKGROUND,
+  FACE,
+  MIN_MAX,
+} = require("../nftAssets/unitNft");
+const { gradeCalc } = require("./gradeUtil");
 const abilityLabels = Object.keys(ABILITY);
 const makeImageDir = (nftName, metaOrImage) =>
-  path.resolve("nftAssets", nftName, metaOrImage);
+  path.resolve("backend", "nftAssets", nftName, metaOrImage);
 const meatadataDir = makeImageDir("unitNft", "metadata");
 const imageDir = makeImageDir("unitNft", "image");
 const originalDir = makeImageDir("unitNft", "original");
 
 const BACTCHSIZE = 100;
 /**
-{
-  "name": "#0",
-  "description": "죠르디는 귀엽다?",
-  "external_url": "http://192.168.0.116/metadata/0",
-  "image": "http://192.168.0.116/images/0",
-  "attributes": [
-    { "trait_type": "gender", "value": "male" },
-    { "trait_type": "level", "value": "Legendary" },
-    { "display_type": "number", "trait_type": "attack", "value": 0 },         50  ~ 500
-    { "display_type": "number", "trait_type": "defence", "value": 0 },        30  ~ 300
-    { "display_type": "number", "trait_type": "magic_attack", "value": 0 },   50  ~ 500
-    { "display_type": "number", "trait_type": "magic_defence", "value": 0 },  30  ~ 300
-    { "display_type": "number", "trait_type": "speed", "value": 0 },          1   ~ 22
-    { "display_type": "number", "trait_type": "hp", "value": 0 },             100 ~ 800 
-    { "trait_type": "base_color", "value": "white" }
-  ]
-}
+    {
+      "name": "#0",
+      "description": "죠르디는 귀엽다?",
+      "external_url": "http://192.168.0.116/metadata/0",
+      "image": "http://192.168.0.116/images/0",
+      "attributes": [
+        { "trait_type": "gender", "value": "male" },
+        { "trait_type": "level", "value": "Legendary" },
+        { "display_type": "number", "trait_type": "attack", "value": 0 },         50  ~ 500
+        { "display_type": "number", "trait_type": "defence", "value": 0 },        30  ~ 300
+        { "display_type": "number", "trait_type": "magic_attack", "value": 0 },   50  ~ 500
+        { "display_type": "number", "trait_type": "magic_defence", "value": 0 },  30  ~ 300
+        { "display_type": "number", "trait_type": "speed", "value": 0 },          1   ~ 22
+        { "display_type": "number", "trait_type": "hp", "value": 0 },             100 ~ 500 
+        { "trait_type": "base_color", "value": "white" }
+      ]
+    }
  */
 
+const insertGrade = (obj) => {
+  const prevAttributes = obj.attributes;
+
+  const sumAttributes = prevAttributes
+    .map((attribute) =>
+      attribute.display_type === "number" ? attribute.value : 0
+    )
+    .reduce((prev, curr) => prev + curr, 0);
+
+  const grade = gradeCalc(MIN_MAX, sumAttributes);
+
+  const newAttributes = [
+    ...prevAttributes,
+    { trait_type: "grade", value: grade },
+  ];
+  obj.attributes = newAttributes;
+
+  return obj;
+};
 const makeName = (name) => ({ name: `#${name}` });
 const makeDescription = (description) => ({ description: `${description}` });
 const makeExternalUrl = (id) =>
@@ -41,8 +67,6 @@ const getImagesList = (dir) => fs.readdirSync(dir);
 // fs.readdirSync(path.resolve("images")).map((list) => {
 //   return `http://192.168.0.116:3000/images/${list}`;
 // });
-
-console.log(getImagesList(originalDir));
 
 const randomChoice = (inputArr) => {
   const arrSize = inputArr.length;
@@ -124,7 +148,8 @@ const metadata = Array(BACTCHSIZE)
   });
 
 metadata.forEach((metadata, idx) => {
-  const metadataToJson = JSON.stringify(metadata);
+  const addedGrade = insertGrade(metadata);
+  const metadataToJson = JSON.stringify(addedGrade);
   fs.writeFileSync(path.resolve(meatadataDir, `${idx}.json`), metadataToJson);
   if (idx % 10 === 0)
     console.log(
@@ -134,21 +159,4 @@ metadata.forEach((metadata, idx) => {
     );
 });
 
-const test = {
-  name: "#1355",
-  description: "#1355의 테스트 내용입니댜-",
-  externalUrl: "http://192.168.0.116:3000/nft/equipNft/metadata/1355",
-  image: "http://192.168.0.116:3000/nft/equipNft/image/Icon24.png",
-  attributes: [
-    { trait_type: "attack", value: 25, display_type: "number" },
-    { trait_type: "magic_attack", value: 18, display_type: "number" },
-    { trait_type: "hp", value: 16, display_type: "number" },
-    { trait_type: "base_color", value: "orange" },
-  ],
-};
-
 ["attack", "defence", "magic_attack", "magic_defence", "hp", "spd"];
-
-test.attributes
-  .map((attribute) => (attribute.display_type == "number" ? value : 0))
-  .reduce((prev, curr) => prev + curr, 0);

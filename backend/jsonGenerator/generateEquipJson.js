@@ -1,10 +1,11 @@
 const fs = require("fs");
 const path = require("path");
-const { NAME, ABILITY, BACKGROUND } = require("../nftAssets/equipNft");
+const { NAME, ABILITY, BACKGROUND, MIN_MAX } = require("../nftAssets/equipNft");
 const abilityLabels = Object.keys(ABILITY);
 const makeImageDir = (nftName, metaOrImage) =>
   path.resolve("nftAssets", nftName, metaOrImage);
 const meatadataDir = makeImageDir("equipNft", "metadata");
+const { gradeCalc } = require("./gradeUtil");
 const imageDir = makeImageDir("equipNft", "image");
 const originalDir = makeImageDir("equipNft", "original");
 
@@ -18,16 +19,57 @@ const BACTCHSIZE = 100;
       "attributes": [
         { "trait_type": "gender", "value": "male" },
         { "trait_type": "level", "value": "Legendary" },
-        { "display_type": "number", "trait_type": "attack", "value": 0 },         50  ~ 500
-        { "display_type": "number", "trait_type": "defence", "value": 0 },        30  ~ 300
-        { "display_type": "number", "trait_type": "magic_attack", "value": 0 },   50  ~ 500
-        { "display_type": "number", "trait_type": "magic_defence", "value": 0 },  30  ~ 300
-        { "display_type": "number", "trait_type": "speed", "value": 0 },          1   ~ 22
-        { "display_type": "number", "trait_type": "hp", "value": 0 },             100 ~ 800 
+        { "display_type": "number", "trait_type": "attack", "value": 0 }, //        50  ~ 500
+        { "display_type": "number", "trait_type": "defence", "value": 0 }, //       30  ~ 300
+        { "display_type": "number", "trait_type": "magic_attack", "value": 0 }, //  50  ~ 500
+        { "display_type": "number", "trait_type": "magic_defence", "value": 0 }, // 30  ~ 300
+        { "display_type": "number", "trait_type": "speed", "value": 0 }, //         1   ~ 22
+        { "display_type": "number", "trait_type": "hp", "value": 0 }, //            100 ~ 800 
         { "trait_type": "base_color", "value": "white" }
       ]
     }
  */
+
+const test = {
+  name: "#0",
+  description: "죠르디는 귀엽다?",
+  external_url: "http://192.168.0.116/metadata/0",
+  image: "http://192.168.0.116/images/0",
+  attributes: [
+    { trait_type: "gender", value: "male" },
+    { trait_type: "level", value: "Legendary" },
+    { display_type: "number", trait_type: "attack", value: 0 }, //        50  ~ 500
+    { display_type: "number", trait_type: "defence", value: 0 }, //       30  ~ 300
+    { display_type: "number", trait_type: "magic_attack", value: 0 }, //  50  ~ 500
+    { display_type: "number", trait_type: "magic_defence", value: 0 }, // 30  ~ 300
+    { display_type: "number", trait_type: "speed", value: 0 }, //         1   ~ 22
+    { display_type: "number", trait_type: "hp", value: 0 }, //            100 ~ 800
+    { trait_type: "base_color", value: "white" },
+  ],
+};
+
+const insertGrade = (obj) => {
+  const prevAttributes = obj.attributes;
+
+  const sumAttributes = prevAttributes
+    .map((attribute) =>
+      attribute.display_type === "number" ? attribute.value : 0
+    )
+    .reduce((prev, curr) => prev + curr, 0);
+
+  const grade = gradeCalc(MIN_MAX, sumAttributes);
+
+  // console.log(MIN_MAX, sumAttributes);
+  // console.log("gradeCalc", gradeCalc(MIN_MAX, sumAttributes));
+
+  const newAttributes = [
+    ...prevAttributes,
+    { trait_type: "grade", value: grade },
+  ];
+  obj.attributes = newAttributes;
+  // console.log("insertGrade", obj);
+  return obj;
+};
 
 const makeName = (name) => ({ name: `#${name}` });
 const makeDescription = (description) => ({ description: `${description}` });
@@ -102,7 +144,7 @@ function equipNftMinting(startIdx, mintingSize) {
       return abilities;
     });
 
-  console.log("abilities@@@@@@@@@@", abilities);
+  // console.log("abilities@@@@@@@@@@", abilities);
   const addedAbilities = abilities.map((ability) => [
     ...ability,
     makeBaseColor(randomChoice(BACKGROUND)),
@@ -126,7 +168,8 @@ function equipNftMinting(startIdx, mintingSize) {
 
   metadata(startIdx, mintingSize).forEach((metadata, idx) => {
     const paddingIdx = startIdx + idx;
-    const metadataToJson = JSON.stringify(metadata);
+    const addedGrade = insertGrade(metadata);
+    const metadataToJson = JSON.stringify(addedGrade);
     const dir = path.resolve(meatadataDir, `${paddingIdx}.json`);
     uris.push(dir);
     fs.writeFileSync(dir, metadataToJson);
