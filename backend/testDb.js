@@ -36,9 +36,9 @@ const {
 
 connectDb().then(async () => {
   // const counter = await NftCounter.initCounter();
-  console.log(await NftCounter.increase());
-  console.log(await NftCounter.increase());
-  console.log(await NftCounter.increase());
-  console.log(await NftCounter.setCounter(5));
-  console.log(await NftCounter.getCounter());
+  // console.log(await NftCounter.increase());
+  // console.log(await NftCounter.increase());
+  // console.log(await NftCounter.increase());
+  // console.log(await NftCounter.setCounter(5));
+  // console.log(await NftCounter.getCounter());
 });

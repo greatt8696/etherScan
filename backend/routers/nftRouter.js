@@ -1,4 +1,4 @@
-const { Block, Transaction } = require("../mongoDb/models");
+const { Block, Transaction, NftCounter } = require("../mongoDb/models");
 
 const router = require("express").Router();
 
@@ -42,8 +42,8 @@ router.get("/:nftName/image/:tokenId", async (req, res) => {
 router.get("/equipNft/minting/:minitngSize", async (req, res) => {
   try {
     const { minitngSize } = req.params;
-    console.log(minitngSize);
-    return response(res, 200, true, minting(5, minitngSize));
+    const startIdx = await NftCounter.increase(minitngSize);
+    return response(res, 200, true, minting(startIdx.counter, minitngSize));
   } catch (error) {
     return response(res, 404, false, false, error);
   }
