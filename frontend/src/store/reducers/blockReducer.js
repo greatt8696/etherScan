@@ -46,15 +46,17 @@ export const getNewBlockByNumber = (blockNumber) => async (dispatch) => {
     method: "get",
   }).then((response) => response.data.data);
   dispatch(addNewBlock(newBlock));
-  toast.info(`블록생성 : ${newBlock[0].hash}`, {
-    position: "bottom-left",
-    autoClose: 2000,
-    hideProgressBar: false,
-    pauseOnHover: true,
-    draggable: false,
-    progress: undefined,
-    theme: "colored",
-  });
+  setTimeout(() => {
+    toast.info(`블록생성 : ${newBlock[0].hash}`, {
+      position: "bottom-left",
+      autoClose: 2000,
+      hideProgressBar: false,
+      pauseOnHover: true,
+      draggable: false,
+      progress: undefined,
+      theme: "colored",
+    });
+  }, 50);
 };
 
 export const selectBlock = (state) => state.block.blocks;

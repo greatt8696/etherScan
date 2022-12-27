@@ -126,7 +126,7 @@ const makeDeviation = (min, max, skew = 9, notFloat = true) => {
   return notFloat ? parseInt(num) : num;
 };
 
-function equipNftMinting(startIdx, mintingSize) {
+function equipNftMinting(startIdx, mintingSize, baseUri) {
   mintingSize = parseInt(mintingSize);
   const uris = [];
   const abilities = Array(parseInt(mintingSize))
@@ -171,7 +171,7 @@ function equipNftMinting(startIdx, mintingSize) {
     const addedGrade = insertGrade(metadata);
     const metadataToJson = JSON.stringify(addedGrade);
     const dir = path.resolve(meatadataDir, `${paddingIdx}.json`);
-    uris.push(dir);
+    uris.push(baseUri + `/${paddingIdx}`);
     fs.writeFileSync(dir, metadataToJson);
     // console.log(paddingIdx, metadata, uris, idx);
     if (paddingIdx % 10 === 0)

@@ -47,7 +47,11 @@ router.get("/equipNft/minting/:minitngSize", async (req, res) => {
       res,
       200,
       true,
-      equipNftMinting(startIdx.counter, minitngSize)
+      equipNftMinting(
+        startIdx.counter,
+        minitngSize,
+        "http://192.168.0.116:3000/nft/equipNft/metadata"
+      )
     );
   } catch (error) {
     return response(res, 404, false, false, error);

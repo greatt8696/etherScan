@@ -11,7 +11,7 @@ export const transactionSlice = createSlice({
     getTransactions: (state, action) =>
       produce(state, (draft) => {
         draft.transactions = action.payload;
-        console.log(draft.transactions);
+        //console.log(draft.transactions);
       }),
 
     addNewTransaction: (state, action) =>
@@ -57,7 +57,7 @@ export const getNewTransactionByHash =
         progress: undefined,
         theme: "colored",
       });
-    }, 500);
+    }, 200);
   };
 
 export const selectTransaction = (state) => state.transaction.transactions;
