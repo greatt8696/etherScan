@@ -17,7 +17,6 @@ import {
   selectTransaction,
 } from "./store/reducers/transactionReducer";
 
-import { toast } from "react-toastify";
 function App() {
   const [web3, account] = useWeb3();
   const firstInit = useRef();
@@ -42,7 +41,7 @@ function App() {
         await web3.setContract(CA, contract);
 
         const instance = web3.getContractInstance();
-
+        console.log(instance);
         web3
           .subscribeNewBlockEvent((event) => {
             if (

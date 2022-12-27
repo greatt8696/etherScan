@@ -46,16 +46,18 @@ export const getNewTransactionByHash =
     }).then((response) => response.data.data);
     console.log("addNewTransaction(newTransaction)", newTransaction[0].hash);
     dispatch(addNewTransaction(newTransaction));
-    toast.success(`트랜잭션 : ${newTransaction[0].hash}`, {
-      position: "bottom-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: false,
-      progress: undefined,
-      theme: "colored",
-    });
+    setTimeout(() => {
+      toast.success(`트랜잭션 : ${newTransaction[0].hash}`, {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "colored",
+      });
+    }, 500);
   };
 
 export const selectTransaction = (state) => state.transaction.transactions;

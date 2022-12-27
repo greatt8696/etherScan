@@ -1,11 +1,13 @@
-import React from 'react'
-import { Outlet } from 'react-router-dom'
-import NavBar from '../../components/nav-bar/Main'
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import React from "react";
+import { Outlet } from "react-router-dom";
+import NavBar from "../../components/nav-bar/Main";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Loading from "../../components/loading/Loading";
 const Main = () => {
   return (
     <div>
+      <Loading />
       <div className="w-full h-20 fixed z-50">
         <NavBar />
       </div>
@@ -29,7 +31,7 @@ const Main = () => {
         theme="light"
       />
     </div>
-  )
-}
+  );
+};
 
-export default Main
+export default Main;

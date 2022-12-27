@@ -4,7 +4,12 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const api = require("./routers/api");
-const { blockRouter, transactionRouter, logsRouter, nftRouter } = require("./routers");
+const {
+  blockRouter,
+  transactionRouter,
+  logsRouter,
+  nftRouter,
+} = require("./routers");
 const {
   connectDb,
   initDb,
@@ -24,7 +29,10 @@ const { CAs, Contracts } = require("../solidity");
     await web3Manager.init();
     await web3Manager.setContracts(CAs, Contracts);
     const instances = web3Manager.getContractInstances();
-    const addLogsToDB = async (logs) => await Logs.insertlogss(logs);
+    const addLogsToDB = async (logs) => {
+      console.log("addLogsToDB@@@@", logs);
+      return await Logs.insertlogss(logs);
+    };
 
     const addBlockAndTransactionToDB = async () => {
       const completedBlock = await web3Manager.getWeb3Eth().getBlock("latest");
@@ -38,8 +46,8 @@ const { CAs, Contracts } = require("../solidity");
     web3Manager
       .subscribeNewBlockEvent(addBlockAndTransactionToDB)
       .subscribeTransationEvent(instances, addLogsToDB)
-    //  .initTransaction();
-    //.startTransactionBot();
+      .initTransaction(instances[0])
+      .startTransactionBot(instances[0]);
 
     /*  체이닝
         web3Manager.subscribeNewBlockEvent(addBlockAndTransactionToDB)

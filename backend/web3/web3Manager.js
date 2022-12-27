@@ -97,8 +97,8 @@ class Web3Manager {
     return this;
   };
 
-  initTransaction = () => {
-    this.sendTransaction({
+  initTransaction = (instance) => {
+    this.sendTransaction(instance, {
       functionName: "faucetMint",
       args: [getRandomNumber(500000, 5000000)],
 
@@ -108,14 +108,14 @@ class Web3Manager {
   };
 
   sendTransaction = (
+    transactionInstance,
     inputObj = {
       functionName: "Transfer",
       args: [],
       from: "0x...",
       to: "0x...",
       value: "0x...",
-    },
-    transactionInstance
+    }
   ) => {
     const { args, functionName, ...other } = inputObj;
     return transactionInstance.methods[functionName](...args).send({
@@ -124,6 +124,7 @@ class Web3Manager {
   };
 
   startTransactionBot = async (
+    instance,
     selectTable = ["faucetMint", "transfer", "burn"],
     loopSize = 3000,
     duration = 10000
@@ -160,7 +161,7 @@ class Web3Manager {
         default:
           break;
       }
-      this.sendTransaction(inputObj);
+      this.sendTransaction(instance, inputObj);
       console.log(`AUTO-${i} : {${JSON.stringify(inputObj)}}`);
       i += 1;
     }, duration);
