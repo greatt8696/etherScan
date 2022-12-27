@@ -3,7 +3,6 @@ import axios from "axios";
 import produce, { original } from "immer";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-useNavigate;
 
 export const blockSlice = createSlice({
   name: "block",

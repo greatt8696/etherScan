@@ -1,5 +1,6 @@
 import { createSlice, combineReducers } from "@reduxjs/toolkit";
 import blockReducer from "./blockReducer";
+import interfaceReducer from "./interfaceReducer";
 import transactionReducer from "./transactionReducer";
 import userReducer from "./userReducer";
 
@@ -8,6 +9,7 @@ const rootReducer = combineReducers({
   todos: userReducer,
   block: blockReducer,
   transaction: transactionReducer,
+  interface: interfaceReducer,
 });
 
 export default rootReducer;

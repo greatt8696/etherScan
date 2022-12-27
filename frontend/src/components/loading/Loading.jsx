@@ -4,7 +4,6 @@ import loading2 from "../../../public/images/loading2.gif";
 import loading3 from "../../../public/images/loading3.gif";
 
 const Loading = () => {
-  const loading = useState(true);
   const loadingTable = [loading1, loading2, loading3];
   const randomLoading = () =>
     loadingTable[parseInt(loadingTable.length * Math.random())];

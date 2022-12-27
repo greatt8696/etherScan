@@ -7,7 +7,7 @@ const {
   NftCounter,
 } = require("./mongoDb/models/index");
 
-(async () => {
+const firebase = require("firebase/app")(async () => {
   await connectDb();
 
   // const page = 1;

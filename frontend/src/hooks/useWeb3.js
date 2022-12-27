@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { ClientWeb3Manager } from "../web3/web3Manager";
+import React, { useEffect, useRef, useState } from "react";
+import { ClientWeb3Manager, instance } from "../web3/web3Manager";
 
 const useWeb3 = () => {
+  const web3Instance = useRef();
   // 주소를 담을 상태값
   const [account, setAccount] = useState();
   // web3 객체 담을 상태값
@@ -23,14 +24,15 @@ const useWeb3 = () => {
       // 연결된 주소 가져오고
       const account = await getRequestAccount();
       // web3 객체 만들어주고
-      const web3 = new ClientWeb3Manager(window.ethereum);
-      setAccount(account);
+      web3Instance.current = new ClientWeb3Manager();
+      web3Instance.current.init(window.ethereum);
+      web3.setAccount(account);
       setWeb3(web3);
     })();
   }, []);
 
   // web3 객체 연결된 주소 반환 해주는 커스텀 훅
-  return [web3, account];
+  return [web3Instance.current, account];
 };
 
 export default useWeb3;

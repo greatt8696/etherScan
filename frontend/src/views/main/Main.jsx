@@ -7,7 +7,6 @@ import Loading from "../../components/loading/Loading";
 const Main = () => {
   return (
     <div>
-      <Loading />
       <div className="w-full h-20 fixed z-50">
         <NavBar />
       </div>

@@ -16,6 +16,11 @@ import {
   getTransactionsByPage,
   selectTransaction,
 } from "./store/reducers/transactionReducer";
+import {
+  offLoadingDispatch,
+  selectLoading,
+} from "./store/reducers/interfaceReducer";
+import Loading from "./components/loading/Loading";
 
 function App() {
   const [web3, account] = useWeb3();
@@ -24,6 +29,7 @@ function App() {
   const dispatch = useDispatch();
   const blocks = useSelector(selectBlock);
   const transactions = useSelector(selectTransaction);
+  const loading = useSelector(selectLoading);
 
   useEffect(() => {
     const initWeb3AndContract = async () => {
@@ -65,16 +71,20 @@ function App() {
       firstInit.current = false;
     };
     if (!!web3) initWeb3AndContract();
-    console.log(web3);
+    // console.log(web3);
   }, [web3]);
 
   useEffect(() => {
     dispatch(getBlocksByPage());
     dispatch(getTransactionsByPage());
+    setTimeout(() => {
+      dispatch(offLoadingDispatch());
+    }, 1000);
   }, []);
 
   return (
     <BrowserRouter>
+      {loading && <Loading />}
       <Router />
       <ScrollToTop />
     </BrowserRouter>
