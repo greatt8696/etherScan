@@ -24,11 +24,14 @@ contract EquipToken is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
         setApprovalForAll(exchangeOperatorCA, true);
     }
 
+
+    //["http://1","http://2","http://3","http://4","http://5","http://6","http://7","http://8","http://9","http://10"]
     function batchMint(uint256 _mintSize, string[] memory uris) public {
-        require(uris.length == _mintSize,"available u");
+        require(uris.length == _mintSize,"available uris");
         for (uint256 idx = 0; idx < _mintSize; idx++) {
             safeMint(_msgSender(), uris[idx]);
         }
+
     }
 
     function exchangeMint(address to, string memory uri) public {
