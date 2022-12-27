@@ -30,7 +30,6 @@ function App() {
     const initWeb3AndContract = async () => {
       if (firstInit.current) {
         web3.init();
-
         const [CA, contract] = await Promise.all([
           axios("http://192.168.0.116:3000/api/getCA").then(
             (result) => result.data.data
@@ -39,6 +38,7 @@ function App() {
             (result) => result.data.data
           ),
         ]);
+
         await web3.setContract(CA, contract);
 
         const instance = web3.getContractInstance();
