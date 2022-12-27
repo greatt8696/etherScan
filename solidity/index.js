@@ -12,3 +12,8 @@ const Contracts = [
 ];
 
 module.exports = { CAs, Contracts };
+
+const goerily = [
+  "0xA71796f9C246130333dd311B603ed50f26000d2d", // nftExchanger
+  "0x23647a074a1B6d639C7c3F1A447763Cfbf7aa65c", //
+];
