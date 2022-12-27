@@ -4,107 +4,7 @@
 	},
 	"language": "Solidity",
 	"output": {
-		"abi": [
-			{
-				"inputs": [],
-				"stateMutability": "nonpayable",
-				"type": "constructor"
-			},
-			{
-				"anonymous": false,
-				"inputs": [
-					{
-						"indexed": true,
-						"internalType": "address",
-						"name": "minter",
-						"type": "address"
-					},
-					{
-						"indexed": false,
-						"internalType": "uint256",
-						"name": "amount",
-						"type": "uint256"
-					}
-				],
-				"name": "Mint",
-				"type": "event"
-			},
-			{
-				"anonymous": false,
-				"inputs": [
-					{
-						"indexed": true,
-						"internalType": "address",
-						"name": "from",
-						"type": "address"
-					},
-					{
-						"indexed": true,
-						"internalType": "address",
-						"name": "to",
-						"type": "address"
-					},
-					{
-						"indexed": false,
-						"internalType": "uint256",
-						"name": "amount",
-						"type": "uint256"
-					}
-				],
-				"name": "Transfer",
-				"type": "event"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "account",
-						"type": "address"
-					}
-				],
-				"name": "balanceOf",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "amount",
-						"type": "uint256"
-					}
-				],
-				"name": "mint",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "to",
-						"type": "address"
-					},
-					{
-						"internalType": "uint256",
-						"name": "amount",
-						"type": "uint256"
-					}
-				],
-				"name": "transfer",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			}
-		],
+		"abi": [],
 		"devdoc": {
 			"kind": "dev",
 			"methods": {},
@@ -118,7 +18,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"test.sol": "Test"
+			"test1.sol": "test"
 		},
 		"evmVersion": "london",
 		"libraries": {},
@@ -132,12 +32,12 @@
 		"remappings": []
 	},
 	"sources": {
-		"test.sol": {
-			"keccak256": "0xbe703a62e94279887fc151973f969978a18bf1193869c46d5b508662e9c3db88",
+		"test1.sol": {
+			"keccak256": "0x981ac4301d08681f774e43291a34d908ef81ce2dedcfedc97561be8816072f31",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://5054c34aa3dc28479388417c17603fc70ab84af41d31e826f833e14b3b377e31",
-				"dweb:/ipfs/QmYpD5YnKcudSMpaZHYbMsVCQwBYMNEAMfoBCE98RbLqGi"
+				"bzz-raw://04ba0c4bc35528e54ef129e17788c9452afaadbbbf199fc7c7f65855e6c0eec8",
+				"dweb:/ipfs/Qmd9UgofnNdBedbnb8rz8xsfiuo8RQcC6PsBxYeVdAYcBw"
 			]
 		}
 	},

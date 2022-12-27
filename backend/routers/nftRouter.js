@@ -5,13 +5,13 @@ const router = require("express").Router();
 const { response } = require("../util/serverUtil");
 
 const contractJson = require("../../solidity/artifacts/TestTransition.json");
-const { CA } = require("../../solidity");
+const { CAs, Contracts } = require("../../solidity");
 
 const { equipNftMinting } = require("../jsonGenerator/generateEquipJson");
 
 router.get("/getContractJson", async (req, res) => {
   try {
-    return response(res, 200, true, contractJson);
+    return response(res, 200, true, Contracts);
   } catch (error) {
     return response(res, 404, false, false, error);
   }
@@ -19,7 +19,7 @@ router.get("/getContractJson", async (req, res) => {
 
 router.get("/getCA", async (req, res) => {
   try {
-    return response(res, 200, true, CA);
+    return response(res, 200, true, CAs);
   } catch (error) {
     return response(res, 404, false, false, error);
   }
