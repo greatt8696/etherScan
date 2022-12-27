@@ -41,24 +41,14 @@ export const getTransactionsByPage =
 
 export const getNewTransactionByHash =
   (transactionHash) => async (dispatch) => {
-    const newTransaction = await axios({
-      url: `http://${baseUriConfig}:3000/transaction/searchByHash/${transactionHash}/`,
-      method: "get",
-    }).then((response) => response.data.data);
-    console.log("addNewTransaction(newTransaction)", newTransaction[0].hash);
-    dispatch(addNewTransaction(newTransaction));
-    setTimeout(() => {
-      toast.success(`트랜잭션 : ${newTransaction[0].hash}`, {
-        position: "bottom-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-        theme: "colored",
-      });
-    }, 200);
+    setTimeout(async () => {
+      const newTransaction = await axios({
+        url: `http://${baseUriConfig}:3000/transaction/searchByHash/${transactionHash}/`,
+        method: "get",
+      }).then((response) => response.data.data);
+      console.log("addNewTransaction(newTransaction)", newTransaction[0].hash);
+      dispatch(addNewTransaction(newTransaction));
+    }, 500);
   };
 
 export const selectTransaction = (state) => state.transaction.transactions;

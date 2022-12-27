@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { ClientWeb3Manager, instance } from "../web3/web3Manager";
+import { ClientWeb3Manager, lockedInstance } from "../web3/web3Manager";
 
 const useWeb3 = () => {
   const web3Instance = useRef();
@@ -24,8 +24,8 @@ const useWeb3 = () => {
       // 연결된 주소 가져오고
       const account = await getRequestAccount();
       // web3 객체 만들어주고
-      web3Instance.current = new ClientWeb3Manager();
-      web3Instance.current.init(window.ethereum);
+      lockedInstance.init(window.ethereum);
+      web3Instance.current = lockedInstance;
       web3.setAccount(account);
       setWeb3(web3);
     })();

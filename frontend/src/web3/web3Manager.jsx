@@ -1,16 +1,23 @@
 import Web3 from 'web3/dist/web3.min.js'
 
+let instance
+
 class ClientWeb3Manager {
   constructor() {
     this.latestBlockNumber = []
-    this.web3 = false
+    this.blockSubscribe = false
+    this.contractSubscribe = false
+
+    if (instance) {
+      throw new Error('이미 초기화된 WEB3입니다.')
+    }
+
+    instance = this
+    console.log('@@@@@@@@@@@@@@@@@@@@@@init WEB3@@@@@@@@@@@@@@@@@@@@@@')
   }
 
   init = async (provider) => {
-    if (!this.web3) {
-      console.log('@@@@@@@@@@@@@@@@@@@@@@init WEB3@@@@@@@@@@@@@@@@@@@@@@')
-      this.web3 = new Web3(provider || 'ws://127.0.0.1:8545')
-    }
+    this.web3 = new Web3(provider || 'ws://127.0.0.1:8545')
     this.accounts = await this.web3.eth.getAccounts()
     this.accounts = [this.accounts.address]
   }
@@ -50,6 +57,7 @@ class ClientWeb3Manager {
   getWeb3Eth = () => this.web3.eth
 
   subscribeTransationEvent = (contractInstances, callback) => {
+    if (this.contractSubscribe) return this
     contractInstances.forEach((contractInstance) =>
       contractInstance.events
         .allEvents(async function (error, result) {
@@ -63,6 +71,19 @@ class ClientWeb3Manager {
           console.error(error)
         })
         .on('data', async function (result) {
+          /**
+          console.log(lastEvent)
+          const jsonResult = JSON.stringify(result)
+          if (lastEvent.findIndex(jsonResult) === -1) {
+            if (lastEvent.length <= 8) {
+              lastEvent.reverse()
+              lastEvent.pop()
+              lastEvent.reverse()
+            }
+            console.log(lastEvent)
+            lastEvent.push(JSON.stringify(result))
+            callback(result)
+          } */
           callback(result)
         })
         .on('connected', function (subscriptionId) {
@@ -70,18 +91,33 @@ class ClientWeb3Manager {
         })
         .on('error', console.error),
     )
+    this.contractSubscribe = true
     return this
   }
   subscribeNewBlockEvent = (callback) => {
+    if (this.blockSubscribe) return this
     this.web3.eth
       .subscribe('newBlockHeaders')
       .on('data', async (result) => {
         console.log('newBlockHeadersID-BlockNumber : ', result.number)
         if (this.isExistBlockNumber(result.number)) return
+        /**
+        console.log(lastBlockEvent)
         this.insertBlockNumber(result.number)
+        const jsonResult = JSON.stringify(result)
+        if (lastBlockEvent.findIndex(jsonResult) === -1) {
+          if (lastBlockEvent.length <= 8) {
+            lastBlockEvent.reverse()
+            lastBlockEvent.pop()
+            lastBlockEvent.reverse()
+          }
+          lastBlockEvent.push(JSON.stringify(result))
+          callback(result)
+        } */
         callback(result)
       })
       .on('error', console.error)
+    this.blockSubscribe = true
     return this
   }
 
@@ -116,21 +152,24 @@ const getRandomNumber = (min, max) => {
   return parsedInteger
 }
 
-const web3Instance = (() => {
-  var instance
-  function initiate() {
-    instance = new ClientWeb3Manager()
-  }
-  return {
-    getWeb3: function () {
-      if (!instance) {
-        instance = initiate()
-      }
-      return instance
-    },
-  }
-})()
+// const web3Instance = (() => {
+//   var instance
+//   function initiate() {
+//     instance = new ClientWeb3Manager()
+//   }
+//   return {
+//     getWeb3: function () {
+//       if (!instance) {
+//         instance = initiate()
+//       }
+//       return instance
+//     },
+//   }
+// })()
 
-var instance = web3Instance.getWeb3()
+// var instance = web3Instance.getWeb3()
 
-export { instance, ClientWeb3Manager }
+let lockedInstance = new ClientWeb3Manager()
+// let lockedInstance = Object.freeze(new ClientWeb3Manager())
+
+export { lockedInstance, ClientWeb3Manager }
