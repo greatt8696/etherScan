@@ -1,13 +1,5 @@
 const Web3 = require("web3");
 
-const {
-  connectDb,
-  initDb,
-  Block,
-  Transaction,
-  Logs,
-  Nft,
-} = require("../mongoDb/models/index");
 
 class Web3Manager {
   constructor({ networkName }) {

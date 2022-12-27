@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const { baseUriConfig } = require("../baseUriConfig");
 const {
   NAME,
   ABILITY,
@@ -20,8 +21,8 @@ const BACTCHSIZE = 100;
     {
       "name": "#0",
       "description": "죠르디는 귀엽다?",
-      "external_url": "http://192.168.0.116/metadata/0",
-      "image": "http://192.168.0.116/images/0",
+      "external_url": "http://${baseUriConfig}/metadata/0",
+      "image": "http://${baseUriConfig}/images/0",
       "attributes": [
         { "trait_type": "gender", "value": "male" },
         { "trait_type": "level", "value": "Legendary" },
@@ -58,14 +59,14 @@ const insertGrade = (obj) => {
 const makeName = (name) => ({ name: `#${name}` });
 const makeDescription = (description) => ({ description: `${description}` });
 const makeExternalUrl = (id) =>
-  `http://192.168.0.116:3000/nft/${NAME}/metadata/${id}.json`;
+  `http://${baseUriConfig}:3000/nft/${NAME}/metadata/${id}.json`;
 
 const makeImageUrl = (id) =>
-  `http://192.168.0.116:3000/nft/${NAME}/image/${id}`;
+  `http://${baseUriConfig}:3000/nft/${NAME}/image/${id}`;
 
 const getImagesList = (dir) => fs.readdirSync(dir);
 // fs.readdirSync(path.resolve("images")).map((list) => {
-//   return `http://192.168.0.116:3000/images/${list}`;
+//   return `http://${baseUriConfig}:3000/images/${list}`;
 // });
 
 const randomChoice = (inputArr) => {

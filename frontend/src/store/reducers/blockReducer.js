@@ -3,6 +3,7 @@ import axios from "axios";
 import produce, { original } from "immer";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { baseUriConfig } from "../../../baseUriConfig";
 
 export const blockSlice = createSlice({
   name: "block",
@@ -33,7 +34,7 @@ export const getBlocksByPage =
   (page = 1) =>
   async (dispatch) => {
     const blocks = await axios({
-      url: `http://192.168.0.116:3000/block/page/${page}/`,
+      url: `http://${baseUriConfig}:3000/block/page/${page}/`,
       method: "get",
     }).then((response) => response.data.data);
     dispatch(getBlocks(blocks));
@@ -41,7 +42,7 @@ export const getBlocksByPage =
 
 export const getNewBlockByNumber = (blockNumber) => async (dispatch) => {
   const newBlock = await axios({
-    url: `http://192.168.0.116:3000/block/${blockNumber}/`,
+    url: `http://${baseUriConfig}:3000/block/${blockNumber}/`,
     method: "get",
   }).then((response) => response.data.data);
   dispatch(addNewBlock(newBlock));

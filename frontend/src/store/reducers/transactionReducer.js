@@ -2,6 +2,7 @@ import { createAction, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import produce, { original } from "immer";
 import { toast } from "react-toastify";
+import { baseUriConfig } from "../../../baseUriConfig";
 
 export const transactionSlice = createSlice({
   name: "transaction",
@@ -32,7 +33,7 @@ export const getTransactionsByPage =
   (page = 1) =>
   async (dispatch) => {
     const transactions = await axios({
-      url: `http://192.168.0.116:3000/transaction/page/${page}/`,
+      url: `http://${baseUriConfig}:3000/transaction/page/${page}/`,
       method: "get",
     }).then((response) => response.data.data);
     dispatch(getTransactions(transactions));
@@ -41,7 +42,7 @@ export const getTransactionsByPage =
 export const getNewTransactionByHash =
   (transactionHash) => async (dispatch) => {
     const newTransaction = await axios({
-      url: `http://192.168.0.116:3000/transaction/searchByHash/${transactionHash}/`,
+      url: `http://${baseUriConfig}:3000/transaction/searchByHash/${transactionHash}/`,
       method: "get",
     }).then((response) => response.data.data);
     console.log("addNewTransaction(newTransaction)", newTransaction[0].hash);

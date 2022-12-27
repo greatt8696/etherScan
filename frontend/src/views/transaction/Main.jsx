@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { baseUriConfig } from "../../../baseUriConfig";
 
 const Main = () => {
   const [transaction, setTransaction] = useState([]);
@@ -16,13 +17,13 @@ const Main = () => {
     const apiType =
       searchType === "blockHash" ? "searchByblockHash" : "searchByHash";
     axios({
-      url: `http://192.168.0.116:3000/transaction/${apiType}/${location.hash}/`,
+      url: `http://${baseUriConfig}:3000/transaction/${apiType}/${location.hash}/`,
       method: "get",
     }).then((response) => {
       setTransaction(response.data.data);
 
       axios({
-        url: `http://192.168.0.116:3000/logs/searchByTransactionHash/${location.hash}/`,
+        url: `http://${baseUriConfig}:3000/logs/searchByTransactionHash/${location.hash}/`,
         method: "get",
       }).then((response) => {
         setLogs(response.data.data);

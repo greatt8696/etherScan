@@ -21,6 +21,7 @@ import {
   selectLoading,
 } from "./store/reducers/interfaceReducer";
 import Loading from "./components/loading/Loading";
+import { baseUriConfig } from "../baseUriConfig";
 
 function App() {
   const [web3, account] = useWeb3();
@@ -36,18 +37,17 @@ function App() {
       if (firstInit.current) {
         web3.init();
         const [CA, contract] = await Promise.all([
-          axios("http://192.168.0.116:3000/api/getCA").then(
+          axios(`http://${baseUriConfig}:3000/nft/getCA`).then(
             (result) => result.data.data
           ),
-          axios("http://192.168.0.116:3000/api/getContractJson").then(
+          axios(`http://${baseUriConfig}:3000/nft/getContractJson`).then(
             (result) => result.data.data
           ),
         ]);
-
-        await web3.setContract(CA, contract);
+        console.log(CA, contract);
+        await web3.setContracts(CA, contract);
 
         const instance = web3.getContractInstance();
-        console.log(instance);
         web3
           .subscribeNewBlockEvent((event) => {
             if (

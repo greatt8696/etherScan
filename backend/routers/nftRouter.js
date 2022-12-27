@@ -8,6 +8,7 @@ const contractJson = require("../../solidity/artifacts/TestTransition.json");
 const { CAs, Contracts } = require("../../solidity");
 
 const { equipNftMinting } = require("../jsonGenerator/generateEquipJson");
+const { baseUriConfig } = require("../baseUriConfig");
 
 router.get("/getContractJson", async (req, res) => {
   try {
@@ -50,7 +51,7 @@ router.get("/equipNft/minting/:minitngSize", async (req, res) => {
       equipNftMinting(
         startIdx.counter,
         minitngSize,
-        "http://192.168.0.116:3000/nft/equipNft/metadata"
+        `http://${baseUriConfig}/nft/equipNft/metadata`// @@@@@@@@@LC
       )
     );
   } catch (error) {

@@ -740,19 +740,19 @@
 			]
 		},
 		"ERC721Enumerable.sol": {
-			"keccak256": "0x5dd2b5719139fbb4d087ce2274678cd16f5302763a178c733f225972992c924a",
+			"keccak256": "0x177a4872607c3c0c810870eb79d9ff8270e97707d08d9febc33c491f43e63ecb",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://48aabac1f2762d2696fd8108578f0a825a959709a9faa9b32c4644df639c672c",
-				"dweb:/ipfs/Qmf6YVSBSXWPnCSgABN9inkbxGg2ra9UNLkWWr4MxygZC2"
+				"bzz-raw://78dbc363b9b71b35ba772bec5028f0151b2ada9668f50040ffa82e07e1cad21f",
+				"dweb:/ipfs/QmNt5mk6sEohczdN6c3oAMtDjDBsKyHTsvwfvwQaMyPBQ4"
 			]
 		},
 		"EquipToken.sol": {
-			"keccak256": "0x34a6ef31ef731ef30dc18bef2ce0c59459b4b3a0092c92b265c147a56d32431d",
+			"keccak256": "0xd911f8081d8a5e3617d6bff1e5c2dc6a6fa942253f8975825217f695fc96a8cb",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://f0de32188852206a2967e32bd1cc6c8fdb242fe74db3faa810ffd70d3d5f741f",
-				"dweb:/ipfs/QmWy1h3XEYps3DevmnhfiEmVnrmQe9eHyS7mag7vLAsJYu"
+				"bzz-raw://5fb6105f81cd85276931aa41ad299309c68d3cdef69311b544064cff81c89291",
+				"dweb:/ipfs/QmdcDiSeUd5zM4MCQCbWeX7crMzRMk6ZDrk71VD5fZ4B7F"
 			]
 		}
 	},

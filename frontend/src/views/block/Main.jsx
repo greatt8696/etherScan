@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { baseUriConfig } from  "../../../baseUriConfig";
 
 const Main = () => {
   const [block, setBlock] = useState([]);
@@ -10,7 +11,7 @@ const Main = () => {
 
   useEffect(() => {
     axios({
-      url: `http://192.168.0.116:3000/block/${location.blockNumber}/`,
+      url: `http://${baseUriConfig}:3000/block/${location.blockNumber}/`,
       method: "get",
     }).then((response) => {
       setBlock(response.data.data);
