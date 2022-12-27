@@ -59,6 +59,7 @@ const Main = () => {
   };
 
   const linkToGallery = () => nav("/gallery");
+  const linkToMinting = () => nav("/minting");
   const linkToMain = () => nav("/", { state: { id: 1 } });
 
   // console.log(location);
@@ -152,7 +153,7 @@ const Main = () => {
               onMouseEnter={() => handleMenusDropdown("menu1", true)}
               onMouseLeave={() => handleMenusDropdown("menu1", false)}
             ></div>
-            메뉴메뉴
+            갤러리
             {onMenusDropdown[0].value && (
               <MenuDropdown
                 on={() => handleMenusDropdown("menu1", true)}
@@ -164,14 +165,14 @@ const Main = () => {
           <a
             className="introY cursor-pointer text-white font-bold text-lg px-5  whitespace-nowrap"
             style={{ animationDelay: "100ms" }}
-            onClick={linkToMain}
+            onClick={linkToMinting}
           >
             <div
               className="h-[88px] -top-5 w-full absolute  scale-x-75 -left-0"
               onMouseEnter={() => handleMenusDropdown("menu2", true)}
               onMouseLeave={() => handleMenusDropdown("menu2", false)}
             ></div>
-            메뉴메뉴
+            민팅페이지
             {onMenusDropdown[1].value && (
               <MenuDropdown
                 on={() => handleMenusDropdown("menu2", true)}
