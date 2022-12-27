@@ -17,6 +17,7 @@ class ClientWeb3Manager {
   }
 
   init = async (provider) => {
+    this.provider = provider
     this.web3 = new Web3(provider || 'ws://127.0.0.1:8545')
     this.accounts = await this.web3.eth.getAccounts()
     this.accounts = [this.accounts.address]
@@ -25,6 +26,8 @@ class ClientWeb3Manager {
   // "this.instance.methods",
   // this.instance.methods.faucetMint(2).send({ from: this.accounts[0] }).sign
   //);
+
+  getProvider = () => this.provider
 
   setContracts = async (CAs, contracts) => {
     this.instances = await Promise.all(
@@ -70,8 +73,8 @@ class ClientWeb3Manager {
           }
           console.error(error)
         })
-        .on('data', async function (result) {
-          /**
+        .on('data', async (result) => callback(result))
+        /**
           console.log(lastEvent)
           const jsonResult = JSON.stringify(result)
           if (lastEvent.findIndex(jsonResult) === -1) {
@@ -84,8 +87,6 @@ class ClientWeb3Manager {
             lastEvent.push(JSON.stringify(result))
             callback(result)
           } */
-          callback(result)
-        })
         .on('connected', function (subscriptionId) {
           console.log('subscribeTransactionID : ', subscriptionId)
         })
@@ -98,24 +99,7 @@ class ClientWeb3Manager {
     if (this.blockSubscribe) return this
     this.web3.eth
       .subscribe('newBlockHeaders')
-      .on('data', async (result) => {
-        console.log('newBlockHeadersID-BlockNumber : ', result.number)
-        if (this.isExistBlockNumber(result.number)) return
-        /**
-        console.log(lastBlockEvent)
-        this.insertBlockNumber(result.number)
-        const jsonResult = JSON.stringify(result)
-        if (lastBlockEvent.findIndex(jsonResult) === -1) {
-          if (lastBlockEvent.length <= 8) {
-            lastBlockEvent.reverse()
-            lastBlockEvent.pop()
-            lastBlockEvent.reverse()
-          }
-          lastBlockEvent.push(JSON.stringify(result))
-          callback(result)
-        } */
-        callback(result)
-      })
+      .on('data', async (result) => callback(result))
       .on('error', console.error)
     this.blockSubscribe = true
     return this
@@ -132,9 +116,13 @@ class ClientWeb3Manager {
     transactionInstance = this.getContractInstance(),
   ) => {
     const { args, functionName, ...other } = inputObj
-    return transactionInstance.methods[functionName](...args).send({
-      ...other,
-    })
+    return transactionInstance.methods[functionName](...args)
+      .send({
+        ...other,
+      })
+      .on('error', function (error) {
+        console.error('민팅에 실패했어요 다시 시도해주세요.')
+      })
   }
 }
 

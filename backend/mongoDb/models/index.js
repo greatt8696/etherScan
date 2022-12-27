@@ -40,4 +40,5 @@ const connectDb = async function () {
   return mongoDb.connect("mongodb://127.0.0.1:27017");
 };
 
+// NftCounter.initCounter();
 module.exports = { connectDb, initDb, Block, Transaction, Logs, NftCounter };

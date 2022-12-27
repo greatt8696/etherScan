@@ -30,7 +30,6 @@ const { CAs, Contracts } = require("../solidity");
     await web3Manager.setContracts(CAs, Contracts);
     const instances = web3Manager.getContractInstances();
     const addLogsToDB = async (logs) => {
-      console.log("addLogsToDB@@@@", logs);
       return await Logs.insertlogss(logs);
     };
 

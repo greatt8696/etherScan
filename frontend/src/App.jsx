@@ -26,8 +26,6 @@ import { toast } from 'react-toastify'
 
 function App() {
   const [web3, account] = useWeb3()
-  const firstInit = useRef()
-  firstInit.current = true
   const dispatch = useDispatch()
   const blocks = useSelector(selectBlock)
   const transactions = useSelector(selectTransaction)
@@ -35,63 +33,59 @@ function App() {
 
   useEffect(() => {
     const initWeb3AndContract = async () => {
-      if (firstInit.current) {
-        web3.init()
-        const [CA, contract] = await Promise.all([
-          axios(`http://${baseUriConfig}:3000/nft/getCA`).then(
-            (result) => result.data.data,
-          ),
-          axios(`http://${baseUriConfig}:3000/nft/getContractJson`).then(
-            (result) => result.data.data,
-          ),
-        ])
-        console.log(CA, contract)
-        await web3.setContracts(CA, contract)
+      web3.init()
+      const [CA, contract] = await Promise.all([
+        axios(`http://${baseUriConfig}:3000/nft/getCA`).then(
+          (result) => result.data.data,
+        ),
+        axios(`http://${baseUriConfig}:3000/nft/getContractJson`).then(
+          (result) => result.data.data,
+        ),
+      ])
+      await web3.setContracts(CA, contract)
 
-        const instance = web3.getContractInstance()
-        web3
-          .subscribeNewBlockEvent((event) => {
-            if (
-              blocks.filter((block) => {
-                block.number === event.number
-              }).length === 0
-            ) {
-              toast.info(`블록번호 : ${event.number} 블록해시 : ${event.hash}`, {
-                position: 'bottom-left',
-                autoClose: 2000,
+      const instance = web3.getContractInstance()
+      web3
+        .subscribeNewBlockEvent((event) => {
+          if (
+            blocks.filter((block) => {
+              block.number === event.number
+            }).length === 0
+          ) {
+            toast.info(`블록번호 : ${event.number} 블록해시 : ${event.hash}`, {
+              position: 'bottom-left',
+              autoClose: 2000,
+              hideProgressBar: false,
+              pauseOnHover: true,
+              draggable: false,
+              progress: undefined,
+              theme: 'colored',
+            })
+            dispatch(getNewBlockByNumber(event.number))
+          }
+        })
+        .subscribeTransationEvent(instance, (event) => {
+          if (
+            transactions.filter((transaction) => {
+              transaction.hash === event.transactionHash
+            }).length === 0
+          ) {
+            toast.success(
+              `트랜잭션 : ${event.transactionHash} 블록번호 : ${event.blockNumber}`,
+              {
+                position: 'bottom-right',
+                autoClose: 3000,
                 hideProgressBar: false,
+                closeOnClick: true,
                 pauseOnHover: true,
                 draggable: false,
                 progress: undefined,
                 theme: 'colored',
-              })
-              dispatch(getNewBlockByNumber(event.number))
-            }
-          })
-          .subscribeTransationEvent(instance, (event) => {
-            if (
-              transactions.filter((transaction) => {
-                transaction.hash === event.transactionHash
-              }).length === 0
-            ) {
-              toast.success(
-                `트랜잭션 : ${event.transactionHash} 블록번호 : ${event.blockNumber}`,
-                {
-                  position: 'bottom-right',
-                  autoClose: 3000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: false,
-                  progress: undefined,
-                  theme: 'colored',
-                },
-              )
-              dispatch(getNewTransactionByHash(event.transactionHash))
-            }
-          })
-      }
-      firstInit.current = false
+              },
+            )
+            dispatch(getNewTransactionByHash(event.transactionHash))
+          }
+        })
     }
     if (!!web3) initWeb3AndContract()
     // console.log(web3);

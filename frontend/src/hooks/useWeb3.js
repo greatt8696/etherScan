@@ -32,7 +32,7 @@ const useWeb3 = () => {
   }, []);
 
   // web3 객체 연결된 주소 반환 해주는 커스텀 훅
-  return [web3Instance.current, account];
+  return [lockedInstance, account];
 };
 
 export default useWeb3;

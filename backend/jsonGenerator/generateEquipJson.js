@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const { baseUriConfig } = require("../baseUriConfig");
 const { NAME, ABILITY, BACKGROUND, MIN_MAX } = require("../nftAssets/equipNft");
 const abilityLabels = Object.keys(ABILITY);
 const makeImageDir = (nftName, metaOrImage) =>
@@ -14,8 +15,8 @@ const BACTCHSIZE = 100;
     {
       "name": "#0",
       "description": "죠르디는 귀엽다?",
-      "external_url": "http://192.168.0.116/metadata/0",
-      "image": "http://192.168.0.116/images/0",
+      "external_url": "http://${baseUriConfig}/metadata/0",
+      "image": "http://${baseUriConfig}/images/0",
       "attributes": [
         { "trait_type": "gender", "value": "male" },
         { "trait_type": "level", "value": "Legendary" },
@@ -29,24 +30,6 @@ const BACTCHSIZE = 100;
       ]
     }
  */
-
-const test = {
-  name: "#0",
-  description: "죠르디는 귀엽다?",
-  external_url: "http://192.168.0.116/metadata/0",
-  image: "http://192.168.0.116/images/0",
-  attributes: [
-    { trait_type: "gender", value: "male" },
-    { trait_type: "level", value: "Legendary" },
-    { display_type: "number", trait_type: "attack", value: 0 }, //        50  ~ 500
-    { display_type: "number", trait_type: "defence", value: 0 }, //       30  ~ 300
-    { display_type: "number", trait_type: "magic_attack", value: 0 }, //  50  ~ 500
-    { display_type: "number", trait_type: "magic_defence", value: 0 }, // 30  ~ 300
-    { display_type: "number", trait_type: "speed", value: 0 }, //         1   ~ 22
-    { display_type: "number", trait_type: "hp", value: 0 }, //            100 ~ 800
-    { trait_type: "base_color", value: "white" },
-  ],
-};
 
 const insertGrade = (obj) => {
   const prevAttributes = obj.attributes;
@@ -74,10 +57,13 @@ const insertGrade = (obj) => {
 const makeName = (name) => ({ name: `#${name}` });
 const makeDescription = (description) => ({ description: `${description}` });
 const makeExternalUrl = (id) =>
-  `http://192.168.0.116:3000/nft/${NAME}/metadata/${id}`;
+  `http://${baseUriConfig}:3000/nft/${NAME}/metadata/${id}`;
 
 const makeImageUrl = (id) =>
-  `http://192.168.0.116:3000/nft/${NAME}/image/${id}`;
+  `http://${baseUriConfig}:3000/nft/${NAME}/image/${id}`;
+
+// const makeImageUrl = (id) =>
+//   `http://${baseUriConfig}:3000/nft/${NAME}/image/${id}`;
 
 const getImagesList = (dir) => fs.readdirSync(dir);
 
@@ -166,12 +152,17 @@ function equipNftMinting(startIdx, mintingSize, baseUri) {
         return test;
       });
 
+  const idxs = [];
   metadata(startIdx, mintingSize).forEach((metadata, idx) => {
     const paddingIdx = startIdx + idx;
     const addedGrade = insertGrade(metadata);
     const metadataToJson = JSON.stringify(addedGrade);
     const dir = path.resolve(meatadataDir, `${paddingIdx}.json`);
-    uris.push(baseUri + `/${paddingIdx}`);
+
+    idxs.push(paddingIdx);
+    uris.push(
+      `http://${baseUriConfig}:3000/nft/${NAME}/metadata/${paddingIdx}`
+    );
     fs.writeFileSync(dir, metadataToJson);
     // console.log(paddingIdx, metadata, uris, idx);
     if (paddingIdx % 10 === 0)
@@ -182,7 +173,7 @@ function equipNftMinting(startIdx, mintingSize, baseUri) {
       );
   });
 
-  return { lastIdx: startIdx + mintingSize, uris: uris };
+  return { lastIdx: startIdx + mintingSize, uris: uris, idxs: idxs };
 }
 
 module.exports = { equipNftMinting };

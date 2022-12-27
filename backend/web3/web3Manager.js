@@ -119,7 +119,7 @@ class Web3Manager {
     instance,
     selectTable = ["faucetMint", "transfer", "burn"],
     loopSize = 3000,
-    duration = 10000
+    duration = 60000
   ) => {
     let i = 0;
     const intervalId = setInterval(async () => {
