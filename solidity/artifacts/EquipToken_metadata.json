@@ -150,6 +150,24 @@
 			{
 				"inputs": [
 					{
+						"internalType": "uint256",
+						"name": "_mintSize",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string[]",
+						"name": "uris",
+						"type": "string[]"
+					}
+				],
+				"name": "batchMint",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
 						"internalType": "address",
 						"name": "to",
 						"type": "address"
@@ -730,11 +748,11 @@
 			]
 		},
 		"EquipToken.sol": {
-			"keccak256": "0x28017271fe1fa92fccd2a2f51fbf55810be58825cefe37e061049c931e6a95df",
+			"keccak256": "0xffab051fc7813e571b021449a804517ca6a5e75b7f7783777a4a0285bc49760b",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://7e5bab8e9d03967d1973415a4d884ecd2cde0d35d522e86af4ff77bd7946936b",
-				"dweb:/ipfs/QmNtQjYf84ipQZoLV83PrUZDacGXb37DH9zbcjJL3kiteU"
+				"bzz-raw://0b584a68b03b3668f179063cdee3859c1e94440f03fcad04b1954f893b74203e",
+				"dweb:/ipfs/QmNgN9i2LRZcyE5wmR8aFTEfhHn8AEuagH9ZqNFw7WuwTD"
 			]
 		}
 	},

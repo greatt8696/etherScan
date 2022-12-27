@@ -24,6 +24,13 @@ contract EquipToken is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
         setApprovalForAll(exchangeOperatorCA, true);
     }
 
+    function batchMint(uint256 _mintSize, string[] memory uris) public {
+        require(uris.length == _mintSize,"available u");
+        for (uint256 idx = 0; idx < _mintSize; idx++) {
+            safeMint(_msgSender(), uris[idx]);
+        }
+    }
+
     function exchangeMint(address to, string memory uri) public {
         require(msg.sender == _exchangeOperatorCA);
         uint256 tokenId = _tokenIdCounter.current();
