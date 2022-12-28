@@ -26,10 +26,11 @@ const useWeb3 = () => {
       // web3 객체 만들어주고
       lockedInstance.init(window.ethereum);
       web3Instance.current = lockedInstance;
-      web3.setAccount(account);
+      web3Instance.setAccount(account);
+      await web3Instance.setERC721ABI();
       setWeb3(web3);
     })();
-  }, []);
+  }, [web3, account]);
 
   // web3 객체 연결된 주소 반환 해주는 커스텀 훅
   return [lockedInstance, account];

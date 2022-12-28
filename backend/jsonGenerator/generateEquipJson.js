@@ -153,6 +153,8 @@ function equipNftMinting(startIdx, mintingSize, baseUri) {
       });
 
   const idxs = [];
+
+  console.log({ lastIdx: startIdx + mintingSize, uris: uris, idxs: idxs });
   metadata(startIdx, mintingSize).forEach((metadata, idx) => {
     const paddingIdx = startIdx + idx;
     const addedGrade = insertGrade(metadata);

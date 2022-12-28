@@ -1,27 +1,58 @@
 const Web3 = require("web3");
 
-
+const { Network, Alchemy, AlchemySubscription } = require("alchemy-sdk");
 class Web3Manager {
   constructor({ networkName }) {
+    const provider =
+      "https://eth-goerli.g.alchemy.com/v2/_NSjX6xORhXSJKw214enYTvnDCiRVGa0";
+    const web3Provider = new Web3.providers.HttpProvider(provider);
+
     this.networkName = networkName;
     this.web3 = new Web3(
-      Web3.givenProvider || networkName === "goerli"
+      web3Provider || networkName === "goerli" // Web3.givenProvider || networkName === "goerli"
         ? "wss://eth-goerli.g.alchemy.com/v2/_NSjX6xORhXSJKw214enYTvnDCiRVGa0"
         : "ws://127.0.0.1:8545"
     );
     this.latestBlockNumber = [];
+
+    const settings = {
+      apiKey: "_NSjX6xORhXSJKw214enYTvnDCiRVGa0",
+      network: Network.ETH_GOERLI,
+    };
+
+    this.alchemy = new Alchemy(settings);
+
+    // // Get all outbound transfers for a provided address
+    // alchemy.core
+    //   .getTokenBalances("0x994b342dd87fc825f66e51ffa3ef71ad818b6893")
+    //   .then(console.log);
+
+    // // Get all the NFTs owned by an address
+    // const nfts = alchemy.nft.getNftsForOwner("0xshah.eth");
+
+    // // Listen to all new pending transactions
+    // alchemy.ws.on(
+    //   { method: "alchemy_pendingTransactions", fromAddress: "0xshah.eth" },
+    //   (res) => console.log(res)
+    // );
   }
 
   init = async () => {
     this.accounts = await this.web3.eth.getAccounts();
     if (this.networkName === "goerli") {
       this.accounts = await this.web3.eth.accounts.privateKeyToAccount(
-        "0xdb05cda62e2732c3c055642c45696eb9ef0265c2c8fe811ddae2d91b313e2795"
+        "0x3b72a1ab00399e2374514e938724ddd0b495a5969bffae626839572f005d7910"
       );
+      this.web3.eth.accounts.wallet.add(this.accounts);
       this.accounts = [this.accounts.address];
     }
     return this;
   };
+
+  intToHex = (number) => Web3.utils.padLeft(number, 64);
+  // intToHex = (number) => Web3.utils.toHex(number);
+  intToHexBN = (number) => Web3.utils.toBN(number);
+
   setContracts = async (CAs, contracts) => {
     this.instances = await Promise.all(
       CAs.map(
@@ -44,6 +75,10 @@ class Web3Manager {
       : false;
 
   getAccounts = () => this.accounts;
+
+  unlockFirstAccounts = () => {
+    console.log(this.accounts[0]);
+  };
 
   getContractInstances = () => this.instances;
 

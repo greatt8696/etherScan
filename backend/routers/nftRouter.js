@@ -7,8 +7,18 @@ const { response } = require("../util/serverUtil");
 const contractJson = require("../../solidity/artifacts/TestTransition.json");
 const { CAs, Contracts } = require("../../solidity");
 
+const ERC721ABI = require("../../solidity/ERC721.json");
+
 const { equipNftMinting } = require("../jsonGenerator/generateEquipJson");
 const { baseUriConfig } = require("../baseUriConfig");
+
+router.get("/getERC721ABI", async (req, res) => {
+  try {
+    return response(res, 200, true, ERC721ABI);
+  } catch (error) {
+    return response(res, 404, false, false, error);
+  }
+});
 
 router.get("/getContractJson", async (req, res) => {
   try {
@@ -51,7 +61,7 @@ router.get("/equipNft/minting/:minitngSize", async (req, res) => {
       equipNftMinting(
         startIdx.counter,
         minitngSize,
-        `http://${baseUriConfig}/nft/equipNft/metadata`// @@@@@@@@@LC
+        `http://${baseUriConfig}/nft/equipNft/metadata` // @@@@@@@@@LC
       )
     );
   } catch (error) {

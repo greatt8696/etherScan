@@ -1,79 +1,97 @@
-import Web3 from 'web3/dist/web3.min.js'
+import axios from "axios";
+import Web3 from "web3/dist/web3.min.js";
 
-let instance
+let instance;
 
 class ClientWeb3Manager {
   constructor() {
-    this.latestBlockNumber = []
-    this.blockSubscribe = false
-    this.contractSubscribe = false
+    this.latestBlockNumber = [];
+    this.blockSubscribe = false;
+    this.contractSubscribe = false;
+    this.ERC721ABITABLE = {};
 
     if (instance) {
-      throw new Error('이미 초기화된 WEB3입니다.')
+      throw new Error("이미 초기화된 WEB3입니다.");
     }
 
-    instance = this
-    console.log('@@@@@@@@@@@@@@@@@@@@@@init WEB3@@@@@@@@@@@@@@@@@@@@@@')
+    instance = this;
+    console.log("@@@@@@@@@@@@@@@@@@@@@@init WEB3@@@@@@@@@@@@@@@@@@@@@@");
   }
 
   init = async (provider) => {
-    this.provider = provider
-    this.web3 = new Web3(provider || 'ws://127.0.0.1:8545')
-    this.accounts = await this.web3.eth.getAccounts()
-    this.accounts = [this.accounts.address]
-  }
+    this.provider = provider;
+    this.web3 = new Web3(provider || "ws://127.0.0.1:8545");
+    this.accounts = await this.web3.eth.getAccounts();
+    this.accounts = [this.accounts.address];
+  };
   // console.log(
   // "this.instance.methods",
   // this.instance.methods.faucetMint(2).send({ from: this.accounts[0] }).sign
   //);
 
-  getProvider = () => this.provider
+  setAccount = (account) => this.provider.setAccount(account);
+
+  getProvider = () => this.provider;
 
   setContracts = async (CAs, contracts) => {
     this.instances = await Promise.all(
       CAs.map(
-        async (CA, idx) => new this.web3.eth.Contract(contracts[idx].abi, CA),
-      ),
-    )
-    this.methods = this.instances.map((instance) => instance.methods)
-    return this
-  }
+        async (CA, idx) => new this.web3.eth.Contract(contracts[idx].abi, CA)
+      )
+    );
+    this.methods = this.instances.map((instance) => instance.methods);
+    return this;
+  };
+
+  setERC721ABI = async () => {
+    this.ERC721ABI = await axios(
+      `http://${baseUriConfig}:3000/nft/getERC721ABI`
+    ).then((result) => result.data.data);
+  };
+
+  setERC721CONTRACT = async (CA) => {
+    this.ERC721ABITABLE[CA] = new this.web3.eth.Contract(
+      this.ERC721ABI.abi,
+      CA
+    );
+  };
+  getERC721CONTRACT = (CA) => this.ERC721ABITABLE[CA];
 
   insertBlockNumber = (number) => {
-    if (this.isExistBlockNumber(number)) return
-    this.latestBlockNumber.push(number)
-  }
+    if (this.isExistBlockNumber(number)) return;
+    this.latestBlockNumber.push(number);
+  };
 
   isExistBlockNumber = (number) =>
     this.latestBlockNumber.findIndex((blockNumber) => blockNumber === number) >
     -1
       ? true
-      : false
+      : false;
 
-  getAccounts = () => this.accounts
+  getAccounts = () => this.accounts;
 
-  getContractInstance = () => this.instances
+  getContractInstance = () => this.instances;
 
   getMethodsName = () =>
-    Object.keys(this.methods).filter((_, idx) => idx % 3 === 0)
+    Object.keys(this.methods).filter((_, idx) => idx % 3 === 0);
 
-  getWeb3Eth = () => this.web3.eth
+  getWeb3Eth = () => this.web3.eth;
 
   subscribeTransationEvent = (contractInstances, callback) => {
-    if (this.contractSubscribe) return this
+    if (this.contractSubscribe) return this;
     contractInstances.forEach((contractInstance) =>
       contractInstance.events
         .allEvents(async function (error, result) {
           if (!error) {
             console.log(
-              'subscribeTransationEvent : ',
+              "subscribeTransationEvent : ",
               result.event,
-              result.returnValues,
-            )
+              result.returnValues
+            );
           }
-          console.error(error)
+          console.error(error);
         })
-        .on('data', async (result) => callback(result))
+        .on("data", async (result) => callback(result))
         /**
           console.log(lastEvent)
           const jsonResult = JSON.stringify(result)
@@ -87,58 +105,65 @@ class ClientWeb3Manager {
             lastEvent.push(JSON.stringify(result))
             callback(result)
           } */
-        .on('connected', function (subscriptionId) {
-          console.log('subscribeTransactionID : ', subscriptionId)
+        .on("connected", function (subscriptionId) {
+          console.log("subscribeTransactionID : ", subscriptionId);
         })
-        .on('error', console.error),
-    )
-    this.contractSubscribe = true
-    return this
-  }
+        .on("error", console.error)
+    );
+    this.contractSubscribe = true;
+    return this;
+  };
   subscribeNewBlockEvent = (callback) => {
-    if (this.blockSubscribe) return this
+    if (this.blockSubscribe) return this;
     this.web3.eth
-      .subscribe('newBlockHeaders')
-      .on('data', async (result) => callback(result))
-      .on('error', console.error)
-    this.blockSubscribe = true
-    return this
-  }
+      .subscribe("newBlockHeaders")
+      .on("data", async (result) => callback(result))
+      .on("error", console.error);
+    this.blockSubscribe = true;
+    return this;
+  };
 
   sendTransaction = (
     inputObj = {
-      functionName: 'Transfer',
+      functionName: "Transfer",
       args: [],
-      from: '0x...',
-      to: '0x...',
-      value: '0x...',
+      from: "0x...",
+      to: "0x...",
+      value: "0x...",
     },
-    transactionInstance = this.getContractInstance(),
+    transactionInstance = this.getContractInstance()
   ) => {
-    const { args, functionName, ...other } = inputObj
+    const { args, functionName, ...other } = inputObj;
+    console.log(
+      "@@@@@@@@@@@@@@@@@@@@sendTransaction()",
+      transactionInstance,
+      functionName,
+      args,
+      other
+    );
     return transactionInstance.methods[functionName](...args)
       .send({
         ...other,
       })
-      .on('error', function (error) {
-        console.error('민팅에 실패했어요 다시 시도해주세요.')
-      })
-  }
+      .on("error", function (error) {
+        console.error("민팅에 실패했어요 다시 시도해주세요.");
+      });
+  };
 }
 
 const pickRandom = (arr) => {
-  const random = Math.random()
-  const randomIdx = parseInt(random * arr.length)
-  return arr[randomIdx]
-}
+  const random = Math.random();
+  const randomIdx = parseInt(random * arr.length);
+  return arr[randomIdx];
+};
 
 const getRandomNumber = (min, max) => {
-  const random = Math.random()
-  const randomGap = (max - min) * random
-  const setMinimum = randomGap + min
-  const parsedInteger = parseInt(setMinimum)
-  return parsedInteger
-}
+  const random = Math.random();
+  const randomGap = (max - min) * random;
+  const setMinimum = randomGap + min;
+  const parsedInteger = parseInt(setMinimum);
+  return parsedInteger;
+};
 
 // const web3Instance = (() => {
 //   var instance
@@ -157,7 +182,7 @@ const getRandomNumber = (min, max) => {
 
 // var instance = web3Instance.getWeb3()
 
-let lockedInstance = new ClientWeb3Manager()
+let lockedInstance = new ClientWeb3Manager();
 // let lockedInstance = Object.freeze(new ClientWeb3Manager())
 
-export { lockedInstance, ClientWeb3Manager }
+export { lockedInstance, ClientWeb3Manager };
