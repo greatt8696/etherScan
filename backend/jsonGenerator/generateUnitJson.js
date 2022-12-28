@@ -16,7 +16,7 @@ const meatadataDir = makeImageDir("unitNft", "metadata");
 const imageDir = makeImageDir("unitNft", "image");
 const originalDir = makeImageDir("unitNft", "original");
 
-const BACTCHSIZE = 100;
+const BACTCHSIZE = 3000;
 /**
     {
       "name": "#0",

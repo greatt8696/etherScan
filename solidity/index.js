@@ -1,24 +1,16 @@
 let CAs = [
-  "0x36a4Fd0C3D23CF5d9c0250d7Bf64042849BA3D64",
-  "0x43F2F33775f591E4D60393e7E74264d65Fb0A0F6",
-  "0xd8b934580fcE35a11B58C6D73aDeE468a2833fa8",
-  "0xf8e81D47203A594245E36C48e151709F0C19fBe8",
-];
-
-
-CAs = [
   "0x8fa04383966DAF849Cc8ADfDF72b720241066aA6",
   "0x1bb6763fa622e7Cd63ECCc4589d1Ded00bb8194e",
   "0x258d0d17dA92071586042dbb8FDF45D78ad187C3",
   "0xdFbDA3ea40e4F6e0c152C98A1dA479C61DCE1c30",
 ];
 
-
-
-
-
-
-
+CAs = [
+  "0xD3042DC4De554E6e4F677b628a44a985c7dc4e42",
+  "0x395bb06321389059777e9fA1030b1611dcb4Ad76",
+  "0xD388Cd05c4a6Ca673A3add49850cAE539463e77e",
+  "0xbD6233e21239C6399C46E0A889DeB5C698c63e16",
+];
 
 const Contracts = [
   require("./artifacts/TestTransition.json"),
@@ -26,9 +18,6 @@ const Contracts = [
   require("./artifacts/UnitToken.json"),
   require("./artifacts/EquipToken.json"),
 ];
-
-
-
 
 const CA = "0x36a4Fd0C3D23CF5d9c0250d7Bf64042849BA3D64"; //0x43F2F33775f591E4D60393e7E74264d65Fb0A0F6
 const contract = require("./artifacts/TestTransition.json");
