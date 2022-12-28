@@ -5,11 +5,20 @@ let CAs = [
   "0xdFbDA3ea40e4F6e0c152C98A1dA479C61DCE1c30",
 ];
 
+//ganache 학원
 CAs = [
   "0xD3042DC4De554E6e4F677b628a44a985c7dc4e42",
   "0x395bb06321389059777e9fA1030b1611dcb4Ad76",
   "0xD388Cd05c4a6Ca673A3add49850cAE539463e77e",
   "0xbD6233e21239C6399C46E0A889DeB5C698c63e16",
+];
+
+//goerli
+CAs = [
+  "0x47a84032057ceAAc88aE0AA8827B99999aA38a90",
+  "0x120D93Ec690A5dD0197dFE3469fa1fD49D1B7013",
+  "0xF479Fd34535a92117D89A32802E1A8FDdd065D5a",
+  "0x390f5D5149C3117703eBd0DE56783D7B38b94826",
 ];
 
 const Contracts = [
@@ -24,7 +33,7 @@ const contract = require("./artifacts/TestTransition.json");
 
 module.exports = { CAs, Contracts, CA, contract };
 
-const goerily = [
+const goerli = [
   "0xA71796f9C246130333dd311B603ed50f26000d2d", // nftExchanger
   "0x23647a074a1B6d639C7c3F1A447763Cfbf7aa65c", // uint
 ];
