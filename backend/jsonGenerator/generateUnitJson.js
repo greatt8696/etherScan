@@ -17,7 +17,7 @@ const imageDir = makeImageDir("unitNft", "image");
 const originalDir = makeImageDir("unitNft", "original");
 
 const BACTCHSIZE = 3000;
-/**
+/*
     {
       "name": "#0",
       "description": "죠르디는 귀엽다?",
