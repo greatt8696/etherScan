@@ -23,6 +23,15 @@ contract NftExchanger {
         address indexed from,
         address indexed to
     );
+
+    event GetApprovalForAllFromOtherContract(
+        address indexed CA,
+        address indexed owner,
+        address indexed spender,
+        bool check,
+        bytes data
+    );
+
     event CheckId(address indexed CA);
 
     event Minting(address CA, string uri, address indexed minter);
@@ -112,5 +121,27 @@ contract NftExchanger {
         makeTransfer(nftName, _owner, buyer, tokenId);
         delete _sales[nftList[nftName]][_tokenId];
         emit Sale(nftList[nftName], _tokenId, _price, buyer, seller);
+    }
+
+    function getApprovalForAllFromOtherContract(string memory nftName) public {
+        (bool check, bytes memory data) = nftList[nftName].delegatecall(
+            abi.encodeWithSignature(
+                "setApprovalForAll(address,bool)",
+                address(this),
+                true
+            )
+        );
+    }
+
+    function checkApprovalForAll(string memory nftName) public returns (bytes memory) {
+        (bool check, bytes memory data) = nftList[nftName].delegatecall(
+            abi.encodeWithSignature(
+                "isApprovedForAll(address,address)",
+                msg.sender,
+                address(this)
+            )
+        );
+
+        return data;
     }
 }

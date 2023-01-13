@@ -16,7 +16,7 @@ contract UnitToken is ERC721, ERC721Enumerable, Ownable {
 
     mapping(address => uint256[]) private _userOwnedTokenIds;
 
-    constructor(uint256 maxMint, address exchangeOperatorCA)
+    constructor(uint256 maxMint)
         ERC721("UnitToken", "UNT")
     {
         uint256 MINT_SIZE = 10;
@@ -25,7 +25,7 @@ contract UnitToken is ERC721, ERC721Enumerable, Ownable {
         for (uint256 idx = 0; idx < MINT_SIZE; idx++) {
             ownerSafeMint();
         }
-        setApprovalForAll(exchangeOperatorCA, true);
+        // setApprovalForAll(exchangeOperatorCA, true);
     }
 
     function _baseURI() internal pure override returns (string memory) {

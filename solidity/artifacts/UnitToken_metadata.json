@@ -11,11 +11,6 @@
 						"internalType": "uint256",
 						"name": "maxMint",
 						"type": "uint256"
-					},
-					{
-						"internalType": "address",
-						"name": "exchangeOperatorCA",
-						"type": "address"
 					}
 				],
 				"stateMutability": "nonpayable",
@@ -764,11 +759,11 @@
 			]
 		},
 		"UnitToken.sol": {
-			"keccak256": "0x663cee09ec85580978a0ea9aedcf98b1755538385e18c0a6a4c0360c1d179d50",
+			"keccak256": "0x1547c130926cf95000131ad517e9aaf70e3777044c7d40618b2bcc918fbc56f0",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://fbd85ea1ebec53a672293152723a619f63536a1d74822bc807fc367720c973e0",
-				"dweb:/ipfs/QmRiHJd3eTW1G2zH71fHxL9MNwAo47VCAyygwjaNvthqkC"
+				"bzz-raw://a844b1157044403acaaccb73d557c4a5ebece2cf6038407f6583b87768710ba9",
+				"dweb:/ipfs/QmeWoBbvfExNaj5t19SGpoUVvZm5NghFqGFunzQtnyeWTs"
 			]
 		}
 	},

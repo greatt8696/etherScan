@@ -53,6 +53,43 @@
 				"anonymous": false,
 				"inputs": [
 					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "CA",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "owner",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "spender",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "bool",
+						"name": "check",
+						"type": "bool"
+					},
+					{
+						"indexed": false,
+						"internalType": "bytes",
+						"name": "data",
+						"type": "bytes"
+					}
+				],
+				"name": "GetApprovalForAllFromOtherContract",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
 						"indexed": false,
 						"internalType": "address",
 						"name": "CA",
@@ -205,6 +242,38 @@
 				"name": "buySale",
 				"outputs": [],
 				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "nftName",
+						"type": "string"
+					}
+				],
+				"name": "checkApprovalForAll",
+				"outputs": [
+					{
+						"internalType": "bytes",
+						"name": "",
+						"type": "bytes"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "nftName",
+						"type": "string"
+					}
+				],
+				"name": "getApprovalForAllFromOtherContract",
+				"outputs": [],
+				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
@@ -376,11 +445,11 @@
 			]
 		},
 		"nftExchanger.sol": {
-			"keccak256": "0x08f200ddaae6ce18e565582fc34da52a8c363237044e9ab1e3bef704bed1e711",
+			"keccak256": "0x455b65df18ea3605287deab310727b61680a1c8f78884dae0a87764d8c7ff51a",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://50e7f2ff5d6d7ceb445825aabf4b1bc240dba521bfc013ee3cf4c8d1707320d0",
-				"dweb:/ipfs/QmXSF4rSoo7YPo9k1vRZ1GtTzMfMLh7DMJz3dGfAbSMJzh"
+				"bzz-raw://dedbc42cecd252762f01649992e6513bb1f44b46a815a6cfb207c1454be20ab9",
+				"dweb:/ipfs/QmSr3VnJ9LBe2aQNtfuqQzmSysYTFttrnzafkjLQQ1KUtX"
 			]
 		}
 	},
